@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Connector Dashboard Demos - Index</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 8px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .dashboard-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .dashboard-icon {
+            font-size: 32px;
+        }
+
+        .dashboard-number {
+            background: #edf2f7;
+            color: #4a5568;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .dashboard-card h3 {
+            font-size: 20px;
+            color: #1a202c;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .dashboard-card p {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.tier-1 {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .badge.tier-2 {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .badge.programs {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        .badge.users {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .badge.nqms {
+            background: #e9d8fd;
+            color: #6b46c1;
+        }
+
+        .badge.cross-entity {
+            background: #fed7e2;
+            color: #97266d;
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 32px;
+        }
+
+        .info-section h2 {
+            font-size: 24px;
+            color: #1a202c;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .info-section p {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-section li {
+            font-size: 14px;
+            color: #4a5568;
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .info-section li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: 700;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 48px;
+        }
+
+        .tier-section {
+            margin-bottom: 32px;
+        }
+
+        .tier-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Mentor Connector Dashboard Demos</h1>
+            <p>Interactive Prototypes for 2026 System Enhancements</p>
+            <p class="subtitle">Click any dashboard to view the interactive demo</p>
+        </div>
+
+        <div class="info-section">
+            <h2>About These Demos</h2>
+            <p>These dashboard prototypes demonstrate the analytics and monitoring capabilities recommended for Mentor Connector in 2026. Each dashboard addresses specific user needs identified during strategic planning sessions.</p>
+            <ul>
+                <li>Based on MetricsDashboards_Recommendations.md analysis</li>
+                <li>Tier 1 dashboards represent Critical/Quick Win priorities</li>
+                <li>Addresses enhancement items from LowHangingFruit_SystemEnhancements.md</li>
+                <li>Includes real-world scenarios discovered during user testing</li>
+            </ul>
+        </div>
+
+        <div class="tier-section">
+            <div class="tier-title">🔥 Tier 1 Priority Dashboards (Critical / Quick Wins)</div>
+            <div class="dashboard-grid">
+                <a href="dashboard-data-quality.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-icon">📊</div>
+                        <div class="dashboard-number">Dashboard 2</div>
+                    </div>
+                    <h3>Data Quality Monitoring</h3>
+                    <p>Identify programs needing attention based on staleness, missing data, and completeness metrics. Automated alerts for data maintenance.</p>
+                    <div class="dashboard-meta">
+                        <span class="badge tier-1">Tier 1</span>
+                        <span class="badge programs">Programs</span>
+                    </div>
+                </a>
+
+                <a href="dashboard-program-analytics.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-icon">🔍</div>
+                        <div class="dashboard-number">Dashboard 3</div>
+                    </div>
+                    <h3>Program Analytics & Discovery</h3>
+                    <p>Filter and analyze programs by delivery type, status, geography, and other attributes. Addresses e-mentoring visibility gap discovered in testing.</p>
+                    <div class="dashboard-meta">
+                        <span class="badge tier-1">Tier 1</span>
+                        <span class="badge programs">Programs</span>
+                    </div>
+                </a>
+
+                <a href="dashboard-user-activity.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-icon">👥</div>
+                        <div class="dashboard-number">Dashboard 13</div>
+                    </div>
+                    <h3>User Activity & Engagement</h3>
+                    <p>Monitor user login patterns, identify inactive accounts, and track engagement metrics across roles. Enables bulk account cleanup.</p>
+                    <div class="dashboard-meta">
+                        <span class="badge tier-1">Tier 1</span>
+                        <span class="badge users">Users</span>
+                    </div>
+                </a>
+
+                <a href="dashboard-data-health-scorecard.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-icon">🏥</div>
+                        <div class="dashboard-number">Dashboard 16</div>
+                    </div>
+                    <h3>Data Health Scorecard</h3>
+                    <p>Cross-entity overview of system-wide data quality. Executive-level metrics showing health across programs, users, assessments, and affiliates.</p>
+                    <div class="dashboard-meta">
+                        <span class="badge tier-1">Tier 1</span>
+                        <span class="badge cross-entity">Cross-Entity</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Key Features Demonstrated</h2>
+            <ul>
+                <li>Real-time data quality metrics with color-coded severity levels</li>
+                <li>Interactive filtering by program delivery type, status, affiliate, and geography</li>
+                <li>User activity tracking with last login timestamps and engagement rates</li>
+                <li>Automated alert configuration for data maintenance</li>
+                <li>Export capabilities for CSV downloads and bulk operations</li>
+                <li>Visual trend charts showing data quality improvements over time</li>
+                <li>Actionable tables with bulk selection and remediation workflows</li>
+                <li>Cross-entity health monitoring with historical trending</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h2>Enhancement Items Addressed</h2>
+            <p><strong>From LowHangingFruit_SystemEnhancements.md:</strong></p>
+            <ul>
+                <li>#2: User Account Management (Dashboard 13)</li>
+                <li>#3: Admin Dashboards for Data Quality (Dashboards 2, 16)</li>
+                <li>#5: Export Enhancements (All dashboards)</li>
+                <li>#9: Automation & Engagement Features (Dashboard 2)</li>
+                <li>#29: Program Analytics & Visibility Dashboard (Dashboard 3)</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>Mentor Connector Dashboard Demos | January 2026</p>
+            <p style="margin-top: 8px;">Created for 2026 Strategic Planning & Alignment</p>
+            <p style="margin-top: 4px;">Source: /Users/aksana/Documents/Projects/Mentor/2026ScopeAlignment/</p>
+        </div>
+    </div>
+</body>
+</html>

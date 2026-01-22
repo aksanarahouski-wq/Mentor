@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard 16: Data Health Scorecard - Mentor Connector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #1a202c;
+        }
+
+        .dashboard-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .overall-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .overall-score h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            opacity: 0.9;
+        }
+
+        .overall-score-value {
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .overall-score-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .score-card {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-top: 4px solid;
+        }
+
+        .score-card.excellent {
+            border-top-color: #38a169;
+        }
+
+        .score-card.good {
+            border-top-color: #48bb78;
+        }
+
+        .score-card.fair {
+            border-top-color: #ed8936;
+        }
+
+        .score-card.poor {
+            border-top-color: #e53e3e;
+        }
+
+        .score-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 16px;
+        }
+
+        .score-card-value {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .score-card.excellent .score-card-value {
+            color: #38a169;
+        }
+
+        .score-card.good .score-card-value {
+            color: #48bb78;
+        }
+
+        .score-card.fair .score-card-value {
+            color: #ed8936;
+        }
+
+        .score-card.poor .score-card-value {
+            color: #e53e3e;
+        }
+
+        .score-card-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-label {
+            flex: 1;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .health-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .health-item {
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 6px;
+            border-left: 3px solid;
+        }
+
+        .health-item.passing {
+            border-left-color: #38a169;
+        }
+
+        .health-item.warning {
+            border-left-color: #ed8936;
+        }
+
+        .health-item.failing {
+            border-left-color: #e53e3e;
+        }
+
+        .health-item-label {
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 4px;
+        }
+
+        .health-item-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .health-item.passing .health-item-value {
+            color: #38a169;
+        }
+
+        .health-item.warning .health-item-value {
+            color: #ed8936;
+        }
+
+        .health-item.failing .health-item-value {
+            color: #e53e3e;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f7fafc;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            transition: width 0.3s ease;
+        }
+
+        .progress-fill.excellent {
+            background: linear-gradient(90deg, #38a169, #48bb78);
+        }
+
+        .progress-fill.good {
+            background: linear-gradient(90deg, #48bb78, #68d391);
+        }
+
+        .progress-fill.fair {
+            background: linear-gradient(90deg, #ed8936, #f6ad55);
+        }
+
+        .progress-fill.poor {
+            background: linear-gradient(90deg, #e53e3e, #fc8181);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.critical {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .badge.warning {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .badge.good {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .trend-indicator.up {
+            color: #38a169;
+        }
+
+        .trend-indicator.down {
+            color: #e53e3e;
+        }
+
+        .trend-indicator.stable {
+            color: #718096;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3182ce;
+        }
+
+        .alert-banner {
+            background: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            align-items: start;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+        }
+
+        .alert-content h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #d68910;
+            margin-bottom: 4px;
+        }
+
+        .alert-content p {
+            font-size: 13px;
+            color: #7d6608;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>🏥 Data Health Scorecard</h1>
+        <p>Audience: Global Admins, Executive Leadership | Purpose: Cross-entity data quality overview and system health monitoring</p>
+    </div>
+
+    <div class="alert-banner">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-content">
+            <h3>Data Quality Alert</h3>
+            <p>Overall data health has declined 2% this month. Primary contributors: 342 programs not updated in 6+ months, 892 user accounts with no login activity. Recommended action: Activate automated reminder campaigns and initiate cleanup procedures.</p>
+        </div>
+    </div>
+
+    <div class="overall-score">
+        <h2>Overall Data Health Score</h2>
+        <div class="overall-score-value">73%</div>
+        <div class="overall-score-subtitle">Fair | ↓ 2% from last month</div>
+    </div>
+
+    <div class="score-breakdown">
+        <div class="score-card good">
+            <div class="score-card-title">Programs Data Quality</div>
+            <div class="score-card-value">78%</div>
+            <div class="score-card-metrics">
+                <div class="metric-row">
+                    <span class="metric-label">Complete profiles:</span>
+                    <span class="metric-value">84.4%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Recently updated:</span>
+                    <span class="metric-value">73.0%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Missing affiliates:</span>
+                    <span class="metric-value">2.2%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-card fair">
+            <div class="score-card-title">User Accounts Health</div>
+            <div class="score-card-value">60%</div>
+            <div class="score-card-metrics">
+                <div class="metric-row">
+                    <span class="metric-label">Active (30d):</span>
+                    <span class="metric-value">39.9%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Dormant (90d+):</span>
+                    <span class="metric-value">31.9%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Never logged in:</span>
+                    <span class="metric-value">19.5%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-card excellent">
+            <div class="score-card-title">NQMS Assessments</div>
+            <div class="score-card-value">89%</div>
+            <div class="score-card-metrics">
+                <div class="metric-row">
+                    <span class="metric-label">Completed on time:</span>
+                    <span class="metric-value">92.3%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">In progress:</span>
+                    <span class="metric-value">6.1%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Overdue:</span>
+                    <span class="metric-value">1.6%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-card fair">
+            <div class="score-card-title">Affiliate Data Sync</div>
+            <div class="score-card-value">65%</div>
+            <div class="score-card-metrics">
+                <div class="metric-row">
+                    <span class="metric-label">Synced (7d):</span>
+                    <span class="metric-value">68.0%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Out of sync:</span>
+                    <span class="metric-value">22.0%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">No data source:</span>
+                    <span class="metric-value">10.0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Critical Data Quality Metrics</h2>
+        <div class="health-matrix">
+            <div class="health-item passing">
+                <div class="health-item-label">Profile Completeness</div>
+                <div class="health-item-value">84%</div>
+            </div>
+            <div class="health-item warning">
+                <div class="health-item-label">Data Freshness</div>
+                <div class="health-item-value">73%</div>
+            </div>
+            <div class="health-item failing">
+                <div class="health-item-label">User Engagement</div>
+                <div class="health-item-value">40%</div>
+            </div>
+            <div class="health-item passing">
+                <div class="health-item-label">Affiliate Coverage</div>
+                <div class="health-item-value">98%</div>
+            </div>
+            <div class="health-item passing">
+                <div class="health-item-label">Contact Info Valid</div>
+                <div class="health-item-value">96%</div>
+            </div>
+            <div class="health-item warning">
+                <div class="health-item-label">Duplicate Detection</div>
+                <div class="health-item-value">67%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Entity-Level Data Completeness</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Entity</th>
+                    <th>Total Records</th>
+                    <th>Completeness</th>
+                    <th>Trend (30d)</th>
+                    <th>Critical Issues</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Programs</strong></td>
+                    <td>2,920</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill good" style="width: 84%;">84%</div>
+                        </div>
+                    </td>
+                    <td><span class="trend-indicator up">↑ 3%</span></td>
+                    <td><span class="badge warning">342 Stale</span></td>
+                    <td><button class="btn btn-primary">Review</button></td>
+                </tr>
+                <tr>
+                    <td><strong>User Accounts</strong></td>
+                    <td>4,567</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill fair" style="width: 60%;">60%</div>
+                        </div>
+                    </td>
+                    <td><span class="trend-indicator down">↓ 5%</span></td>
+                    <td><span class="badge critical">892 Never Login</span></td>
+                    <td><button class="btn btn-primary">Cleanup</button></td>
+                </tr>
+                <tr>
+                    <td><strong>NQMS Assessments</strong></td>
+                    <td>1,245</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill excellent" style="width: 92%;">92%</div>
+                        </div>
+                    </td>
+                    <td><span class="trend-indicator up">↑ 1%</span></td>
+                    <td><span class="badge good">On Track</span></td>
+                    <td><button class="btn btn-primary">View</button></td>
+                </tr>
+                <tr>
+                    <td><strong>Affiliates</strong></td>
+                    <td>156</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill good" style="width: 88%;">88%</div>
+                        </div>
+                    </td>
+                    <td><span class="trend-indicator stable">→ 0%</span></td>
+                    <td><span class="badge good">No Issues</span></td>
+                    <td><button class="btn btn-primary">View</button></td>
+                </tr>
+                <tr>
+                    <td><strong>Training Records</strong></td>
+                    <td>8,934</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill fair" style="width: 71%;">71%</div>
+                        </div>
+                    </td>
+                    <td><span class="trend-indicator down">↓ 2%</span></td>
+                    <td><span class="badge warning">Sync Lag</span></td>
+                    <td><button class="btn btn-primary">Sync</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Data Quality Recommendations</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Priority</th>
+                    <th>Issue</th>
+                    <th>Impact</th>
+                    <th>Affected Records</th>
+                    <th>Recommended Action</th>
+                    <th>Est. Effort</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="badge critical">Critical</span></td>
+                    <td>892 user accounts never logged in</td>
+                    <td>Database bloat, skewed metrics</td>
+                    <td>892 users</td>
+                    <td>Send activation emails, delete after 30d</td>
+                    <td>2 hours</td>
+                </tr>
+                <tr>
+                    <td><span class="badge critical">Critical</span></td>
+                    <td>342 programs not updated in 6+ months</td>
+                    <td>Unreliable program directory</td>
+                    <td>342 programs</td>
+                    <td>Automated reminder campaign</td>
+                    <td>4 hours</td>
+                </tr>
+                <tr>
+                    <td><span class="badge warning">Warning</span></td>
+                    <td>127 programs missing contact info</td>
+                    <td>Cannot communicate with programs</td>
+                    <td>127 programs</td>
+                    <td>Manual outreach via affiliates</td>
+                    <td>8 hours</td>
+                </tr>
+                <tr>
+                    <td><span class="badge warning">Warning</span></td>
+                    <td>456 incomplete profiles (< 80%)</td>
+                    <td>Poor search/discovery experience</td>
+                    <td>456 programs</td>
+                    <td>Data enrichment campaign</td>
+                    <td>12 hours</td>
+                </tr>
+                <tr>
+                    <td><span class="badge good">Info</span></td>
+                    <td>Training sync lag (24-48h)</td>
+                    <td>Delayed reporting accuracy</td>
+                    <td>~200 records/day</td>
+                    <td>Reduce sync interval to 6h</td>
+                    <td>4 hours dev</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Historical Trend (6 Months)</h2>
+        <div style="height: 200px; background: linear-gradient(to top, #f0f9ff 0%, transparent 100%); border: 1px solid #e2e8f0; border-radius: 4px; position: relative; padding: 20px;">
+            <svg viewBox="0 0 600 160" preserveAspectRatio="none" style="width: 100%; height: 100%;">
+                <polyline
+                    fill="none"
+                    stroke="#667eea"
+                    stroke-width="3"
+                    points="0,90 100,85 200,80 300,75 400,70 500,73 600,75"
+                />
+                <circle cx="0" cy="90" r="4" fill="#667eea" />
+                <circle cx="100" cy="85" r="4" fill="#667eea" />
+                <circle cx="200" cy="80" r="4" fill="#667eea" />
+                <circle cx="300" cy="75" r="4" fill="#667eea" />
+                <circle cx="400" cy="70" r="4" fill="#667eea" />
+                <circle cx="500" cy="73" r="4" fill="#667eea" />
+                <circle cx="600" cy="75" r="4" fill="#667eea" />
+            </svg>
+        </div>
+        <div style="margin-top: 12px; font-size: 13px; color: #718096; text-align: center;">
+            Aug 2025 (68%) → Sep 2025 (70%) → Oct 2025 (72%) → Nov 2025 (75%) → Dec 2025 (78%) → Jan 2026 (75%) → Feb 2026 (73%)
+        </div>
+        <div style="margin-top: 8px; font-size: 12px; color: #a0aec0; text-align: center;">
+            Overall Data Health Score weighted across all entities
+        </div>
+    </div>
+
+    <div style="margin-top: 24px; text-align: center; font-size: 12px; color: #a0aec0;">
+        <p>Demo Dashboard - Data as of January 21, 2026</p>
+        <p style="margin-top: 4px;">Based on: Dashboard 16 from MetricsDashboards_Recommendations.md</p>
+        <p style="margin-top: 4px;">Cross-Entity View | Strategic Foundation for Data Quality Initiative</p>
+    </div>
+</body>
+</html>

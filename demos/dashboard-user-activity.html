@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard 13: User Activity & Engagement - Mentor Connector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #1a202c;
+        }
+
+        .dashboard-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .kpi-card-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            margin-bottom: 8px;
+        }
+
+        .kpi-card-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .kpi-card-subtitle {
+            font-size: 13px;
+            color: #a0aec0;
+        }
+
+        .kpi-card.warning .kpi-card-value {
+            color: #dd6b20;
+        }
+
+        .kpi-card.critical .kpi-card-value {
+            color: #e53e3e;
+        }
+
+        .kpi-card.good .kpi-card-value {
+            color: #38a169;
+        }
+
+        .section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f7fafc;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.critical {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .badge.warning {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .badge.good {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .badge.active {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .badge.dormant {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .badge.never {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3182ce;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .btn-danger {
+            background: #fc8181;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #f56565;
+        }
+
+        .chart-container {
+            height: 300px;
+            background: linear-gradient(to top, #f0f9ff 0%, transparent 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .activity-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 4px;
+            border-left: 3px solid #4299e1;
+        }
+
+        .timeline-time {
+            min-width: 120px;
+            font-size: 12px;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-user {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .timeline-action {
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar select {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        .donut-chart {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .donut-visual {
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        .donut-visual svg {
+            transform: rotate(-90deg);
+        }
+
+        .donut-legend {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .donut-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .donut-legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        .donut-legend-label {
+            flex: 1;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .donut-legend-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>👥 User Activity & Engagement</h1>
+        <p>Audience: Global Admins | Purpose: Monitor user login patterns and identify inactive accounts</p>
+    </div>
+
+    <div class="kpi-cards">
+        <div class="kpi-card">
+            <div class="kpi-card-label">Total User Accounts</div>
+            <div class="kpi-card-value">4,567</div>
+            <div class="kpi-card-subtitle">Across all roles</div>
+        </div>
+        <div class="kpi-card good">
+            <div class="kpi-card-label">Active Users (30 days)</div>
+            <div class="kpi-card-value">1,823</div>
+            <div class="kpi-card-subtitle">39.9% of total</div>
+        </div>
+        <div class="kpi-card warning">
+            <div class="kpi-card-label">Dormant (90+ days)</div>
+            <div class="kpi-card-value">1,456</div>
+            <div class="kpi-card-subtitle">31.9% of total</div>
+        </div>
+        <div class="kpi-card critical">
+            <div class="kpi-card-label">Never Logged In</div>
+            <div class="kpi-card-value">892</div>
+            <div class="kpi-card-subtitle">19.5% of total</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-card-label">New Users (7 days)</div>
+            <div class="kpi-card-value">34</div>
+            <div class="kpi-card-subtitle">↑ 12% vs last week</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">User Engagement Breakdown</h2>
+        <div class="donut-chart">
+            <div class="donut-visual">
+                <svg width="200" height="200" viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#38a169" stroke-width="40"
+                            stroke-dasharray="200.96 314.16" stroke-dashoffset="0"/>
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#ed8936" stroke-width="40"
+                            stroke-dasharray="100.48 314.16" stroke-dashoffset="-200.96"/>
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#e53e3e" stroke-width="40"
+                            stroke-dasharray="61.26 314.16" stroke-dashoffset="-301.44"/>
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#cbd5e0" stroke-width="40"
+                            stroke-dasharray="120 314.16" stroke-dashoffset="-362.7"/>
+                    <text x="100" y="100" text-anchor="middle" dy="0.3em" font-size="32" font-weight="700" fill="#2d3748">4,567</text>
+                    <text x="100" y="125" text-anchor="middle" font-size="12" fill="#718096">Total Users</text>
+                </svg>
+            </div>
+            <div class="donut-legend">
+                <div class="donut-legend-item">
+                    <div class="donut-legend-color" style="background: #38a169;"></div>
+                    <div class="donut-legend-label">Active (Last 30 days)</div>
+                    <div class="donut-legend-value">1,823</div>
+                </div>
+                <div class="donut-legend-item">
+                    <div class="donut-legend-color" style="background: #ed8936;"></div>
+                    <div class="donut-legend-label">Dormant (90+ days)</div>
+                    <div class="donut-legend-value">1,456</div>
+                </div>
+                <div class="donut-legend-item">
+                    <div class="donut-legend-color" style="background: #e53e3e;"></div>
+                    <div class="donut-legend-label">Never Logged In</div>
+                    <div class="donut-legend-value">892</div>
+                </div>
+                <div class="donut-legend-item">
+                    <div class="donut-legend-color" style="background: #cbd5e0;"></div>
+                    <div class="donut-legend-label">Occasional (31-90 days)</div>
+                    <div class="donut-legend-value">396</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Inactive User Accounts - Action Required</h2>
+        <div class="filter-bar">
+            <select>
+                <option>All Roles</option>
+                <option>Program Admin</option>
+                <option>Affiliate Admin</option>
+                <option>Global Admin</option>
+                <option>Volunteer</option>
+            </select>
+            <select>
+                <option selected>Never Logged In</option>
+                <option>Dormant (90+ days)</option>
+                <option>Dormant (180+ days)</option>
+                <option>All Inactive</option>
+            </select>
+            <div class="search-box">
+                <input type="text" placeholder="Search by name or email...">
+            </div>
+            <button class="btn btn-primary">Export List</button>
+            <button class="btn btn-danger">Bulk Delete Selected</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Last Login</th>
+                    <th>Account Created</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Sarah Thompson</td>
+                    <td>sarah.t@example.org</td>
+                    <td>Program Admin</td>
+                    <td><span class="badge never">Never</span></td>
+                    <td>Oct 15, 2024</td>
+                    <td><span class="badge critical">Inactive</span></td>
+                    <td>
+                        <button class="btn btn-secondary">Email</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Michael Chen</td>
+                    <td>m.chen@example.org</td>
+                    <td>Volunteer</td>
+                    <td><span class="badge never">Never</span></td>
+                    <td>Jan 5, 2025</td>
+                    <td><span class="badge critical">Inactive</span></td>
+                    <td>
+                        <button class="btn btn-secondary">Email</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Jennifer Martinez</td>
+                    <td>jmartinez@example.org</td>
+                    <td>Program Admin</td>
+                    <td><span class="badge never">Never</span></td>
+                    <td>Sep 22, 2024</td>
+                    <td><span class="badge critical">Inactive</span></td>
+                    <td>
+                        <button class="btn btn-secondary">Email</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>David Kim</td>
+                    <td>dkim@example.org</td>
+                    <td>Volunteer</td>
+                    <td><span class="badge never">Never</span></td>
+                    <td>Nov 3, 2024</td>
+                    <td><span class="badge critical">Inactive</span></td>
+                    <td>
+                        <button class="btn btn-secondary">Email</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Emily Rodriguez</td>
+                    <td>emily.r@example.org</td>
+                    <td>Affiliate Admin</td>
+                    <td><span class="badge never">Never</span></td>
+                    <td>Aug 17, 2024</td>
+                    <td><span class="badge critical">Inactive</span></td>
+                    <td>
+                        <button class="btn btn-secondary">Email</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 12px; font-size: 13px; color: #718096; text-align: center;">
+            Showing 5 of 892 users who have never logged in
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Recent Login Activity</h2>
+        <div class="activity-timeline">
+            <div class="timeline-item">
+                <div class="timeline-time">2 minutes ago</div>
+                <div class="timeline-content">
+                    <div class="timeline-user">Sandy Martins</div>
+                    <div class="timeline-action">Logged in from 192.168.1.45 (Washington, DC)</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">12 minutes ago</div>
+                <div class="timeline-content">
+                    <div class="timeline-user">Beth Tallarico</div>
+                    <div class="timeline-action">Logged in from 10.0.1.23 (Boston, MA)</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">23 minutes ago</div>
+                <div class="timeline-content">
+                    <div class="timeline-user">Mike Garringer</div>
+                    <div class="timeline-action">Logged in from 172.16.0.8 (Portland, OR)</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">1 hour ago</div>
+                <div class="timeline-content">
+                    <div class="timeline-user">Program Admin - Seattle BBBS</div>
+                    <div class="timeline-action">Logged in from 98.123.45.67 (Seattle, WA)</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">2 hours ago</div>
+                <div class="timeline-content">
+                    <div class="timeline-user">Abbie Evans</div>
+                    <div class="timeline-action">Logged in from 192.168.1.45 (Washington, DC)</div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 16px; text-align: center;">
+            <button class="btn btn-secondary">View Full Activity Log</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">User Activity by Role</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Total Accounts</th>
+                    <th>Active (30d)</th>
+                    <th>Dormant (90d+)</th>
+                    <th>Never Logged In</th>
+                    <th>Engagement Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Global Admin</strong></td>
+                    <td>12</td>
+                    <td>11</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td><span class="badge good">91.7%</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Affiliate Admin</strong></td>
+                    <td>156</td>
+                    <td>98</td>
+                    <td>34</td>
+                    <td>24</td>
+                    <td><span class="badge good">62.8%</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Program Admin</strong></td>
+                    <td>2,345</td>
+                    <td>876</td>
+                    <td>923</td>
+                    <td>546</td>
+                    <td><span class="badge warning">37.4%</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Volunteer</strong></td>
+                    <td>2,054</td>
+                    <td>838</td>
+                    <td>498</td>
+                    <td>322</td>
+                    <td><span class="badge warning">40.8%</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 12px; font-size: 12px; color: #a0aec0;">
+            Engagement Rate = Active Users (30d) / Total Accounts
+        </div>
+    </div>
+
+    <div style="margin-top: 24px; text-align: center; font-size: 12px; color: #a0aec0;">
+        <p>Demo Dashboard - Data as of January 21, 2026</p>
+        <p style="margin-top: 4px;">Based on: Dashboard 13 from MetricsDashboards_Recommendations.md</p>
+        <p style="margin-top: 4px;">Addresses Enhancement #2 (User Account Management) from LowHangingFruit_SystemEnhancements.md</p>
+    </div>
+</body>
+</html>

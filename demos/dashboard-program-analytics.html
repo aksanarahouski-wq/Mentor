@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard 3: Program Analytics & Discovery - Mentor Connector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #1a202c;
+        }
+
+        .dashboard-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .filters-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .filters-section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+        }
+
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-card-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            margin-bottom: 8px;
+        }
+
+        .stat-card-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .stat-card-subtitle {
+            font-size: 13px;
+            color: #a0aec0;
+        }
+
+        .chart-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .chart-section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bar-label {
+            min-width: 180px;
+            font-size: 14px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 32px;
+            background: #edf2f7;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            transition: width 0.3s ease;
+        }
+
+        .bar-fill.highlight {
+            background: linear-gradient(90deg, #ed8936, #dd6b20);
+        }
+
+        .map-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .map-section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .map-placeholder {
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-width: 200px;
+        }
+
+        .map-overlay h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .map-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .map-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #4a5568;
+        }
+
+        .map-legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        .table-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .table-section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f7fafc;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.community {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        .badge.site {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .badge.e-mentoring {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .badge.active {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .badge.inactive {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3182ce;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .alert-box {
+            background: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .alert-box h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #d68910;
+            margin-bottom: 8px;
+        }
+
+        .alert-box p {
+            font-size: 13px;
+            color: #7d6608;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>🔍 Program Analytics & Discovery</h1>
+        <p>Audience: Global Admins, Affiliates, Researchers | Purpose: Analyze program distribution and discover programs by type</p>
+    </div>
+
+    <div class="alert-box">
+        <h3>🎯 Addressing E-Mentoring Visibility Gap</h3>
+        <p>This dashboard directly addresses the discovery made during Sandy's testing: <strong>64 e-mentoring programs</strong> were "hidden" in the system because users couldn't filter by Program Delivery Type. This new analytics view makes it easy to discover and analyze programs by delivery model, status, location, and other critical attributes.</p>
+    </div>
+
+    <div class="filters-section">
+        <h2>Filter Programs</h2>
+        <div class="filter-grid">
+            <div class="filter-group">
+                <label>Program Delivery Type</label>
+                <select id="delivery-type">
+                    <option value="all">All Types (2,920)</option>
+                    <option value="community">Community-Based (1,456)</option>
+                    <option value="site">Site-Based (1,234)</option>
+                    <option value="e-mentoring" selected>E-Mentoring (64)</option>
+                    <option value="hybrid">Hybrid (166)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Program Status</label>
+                <select id="status">
+                    <option value="all">All Statuses</option>
+                    <option value="active" selected>Active</option>
+                    <option value="paused">Paused</option>
+                    <option value="pending">Pending Approval</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Affiliate</label>
+                <select id="affiliate">
+                    <option value="all">All Affiliates</option>
+                    <option value="national">Mentor National</option>
+                    <option value="affiliate1">Affiliate 1</option>
+                    <option value="affiliate2">Affiliate 2</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>State/Region</label>
+                <select id="state">
+                    <option value="all">All States</option>
+                    <option value="CA">California</option>
+                    <option value="NY">New York</option>
+                    <option value="TX">Texas</option>
+                    <option value="WA">Washington</option>
+                </select>
+            </div>
+        </div>
+        <div style="margin-top: 12px;">
+            <button class="btn btn-primary">Apply Filters</button>
+            <button class="btn btn-secondary">Reset</button>
+            <button class="btn btn-secondary">Export Results (CSV)</button>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-card-label">E-Mentoring Programs</div>
+            <div class="stat-card-value">64</div>
+            <div class="stat-card-subtitle">2.2% of total programs</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-label">Active E-Mentoring</div>
+            <div class="stat-card-value">52</div>
+            <div class="stat-card-subtitle">81% active rate</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-label">States Represented</div>
+            <div class="stat-card-value">23</div>
+            <div class="stat-card-subtitle">Across USA</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-label">Avg. Profile Completeness</div>
+            <div class="stat-card-value">78%</div>
+            <div class="stat-card-subtitle">↑ 3% from last month</div>
+        </div>
+    </div>
+
+    <div class="chart-section">
+        <h2>Programs by Delivery Type</h2>
+        <div class="bar-chart">
+            <div class="bar-item">
+                <div class="bar-label">Community-Based</div>
+                <div class="bar-container">
+                    <div class="bar-fill" style="width: 50%;">1,456</div>
+                </div>
+            </div>
+            <div class="bar-item">
+                <div class="bar-label">Site-Based</div>
+                <div class="bar-container">
+                    <div class="bar-fill" style="width: 42%;">1,234</div>
+                </div>
+            </div>
+            <div class="bar-item">
+                <div class="bar-label">Hybrid</div>
+                <div class="bar-container">
+                    <div class="bar-fill" style="width: 6%;">166</div>
+                </div>
+            </div>
+            <div class="bar-item">
+                <div class="bar-label">E-Mentoring</div>
+                <div class="bar-container">
+                    <div class="bar-fill highlight" style="width: 2.2%;">64</div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 12px; font-size: 12px; color: #a0aec0; text-align: center;">
+            Total: 2,920 programs | E-Mentoring highlighted in orange
+        </div>
+    </div>
+
+    <div class="map-section">
+        <h2>Geographic Distribution (E-Mentoring Programs)</h2>
+        <div class="map-placeholder">
+            Interactive Map Visualization
+            <div class="map-overlay">
+                <h3>Top States</h3>
+                <div class="map-legend">
+                    <div class="map-legend-item">
+                        <div class="map-legend-color" style="background: #2c5282;"></div>
+                        <span>California: 12</span>
+                    </div>
+                    <div class="map-legend-item">
+                        <div class="map-legend-color" style="background: #3182ce;"></div>
+                        <span>New York: 9</span>
+                    </div>
+                    <div class="map-legend-item">
+                        <div class="map-legend-color" style="background: #4299e1;"></div>
+                        <span>Texas: 8</span>
+                    </div>
+                    <div class="map-legend-item">
+                        <div class="map-legend-color" style="background: #63b3ed;"></div>
+                        <span>Washington: 6</span>
+                    </div>
+                    <div class="map-legend-item">
+                        <div class="map-legend-color" style="background: #90cdf4;"></div>
+                        <span>Other: 29</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 12px; font-size: 12px; color: #a0aec0; text-align: center;">
+            Click states to drill down into regional program details
+        </div>
+    </div>
+
+    <div class="table-section">
+        <h2>E-Mentoring Programs (Sample)</h2>
+        <div style="margin-bottom: 12px;">
+            <button class="btn btn-primary">Export All 64 Programs</button>
+            <button class="btn btn-secondary">Send Group Email</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>Program Name</th>
+                    <th>Delivery Type</th>
+                    <th>State</th>
+                    <th>Status</th>
+                    <th>Last Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Virtual Youth Mentorship Network</td>
+                    <td><span class="badge e-mentoring">E-Mentoring</span></td>
+                    <td>CA</td>
+                    <td><span class="badge active">Active</span></td>
+                    <td>2 weeks ago</td>
+                    <td><button class="btn btn-secondary">View</button></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Digital Connect Mentoring</td>
+                    <td><span class="badge e-mentoring">E-Mentoring</span></td>
+                    <td>NY</td>
+                    <td><span class="badge active">Active</span></td>
+                    <td>1 month ago</td>
+                    <td><button class="btn btn-secondary">View</button></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Online Academic Support</td>
+                    <td><span class="badge e-mentoring">E-Mentoring</span></td>
+                    <td>TX</td>
+                    <td><span class="badge active">Active</span></td>
+                    <td>3 weeks ago</td>
+                    <td><button class="btn btn-secondary">View</button></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Tech Careers E-Mentoring</td>
+                    <td><span class="badge e-mentoring">E-Mentoring</span></td>
+                    <td>WA</td>
+                    <td><span class="badge active">Active</span></td>
+                    <td>5 days ago</td>
+                    <td><button class="btn btn-secondary">View</button></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Rural Youth Virtual Mentors</td>
+                    <td><span class="badge e-mentoring">E-Mentoring</span></td>
+                    <td>MT</td>
+                    <td><span class="badge inactive">Paused</span></td>
+                    <td>8 months ago</td>
+                    <td><button class="btn btn-secondary">View</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 12px; font-size: 13px; color: #718096; text-align: center;">
+            Showing 5 of 64 e-mentoring programs
+        </div>
+    </div>
+
+    <div style="margin-top: 24px; text-align: center; font-size: 12px; color: #a0aec0;">
+        <p>Demo Dashboard - Data as of January 21, 2026</p>
+        <p style="margin-top: 4px;">Based on: Dashboard 3 from MetricsDashboards_Recommendations.md</p>
+        <p style="margin-top: 4px;">Addresses Enhancement #29 from LowHangingFruit_SystemEnhancements.md</p>
+    </div>
+</body>
+</html>

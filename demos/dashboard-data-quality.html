@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard 2: Data Quality Monitoring - Mentor Connector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #1a202c;
+        }
+
+        .dashboard-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .alert-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .alert-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+
+        .alert-card.critical {
+            border-left-color: #e53e3e;
+        }
+
+        .alert-card.warning {
+            border-left-color: #dd6b20;
+        }
+
+        .alert-card.good {
+            border-left-color: #38a169;
+        }
+
+        .alert-card-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            margin-bottom: 8px;
+        }
+
+        .alert-card-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .alert-card.critical .alert-card-value {
+            color: #e53e3e;
+        }
+
+        .alert-card.warning .alert-card-value {
+            color: #dd6b20;
+        }
+
+        .alert-card.good .alert-card-value {
+            color: #38a169;
+        }
+
+        .alert-card-subtitle {
+            font-size: 13px;
+            color: #a0aec0;
+        }
+
+        .section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f7fafc;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.critical {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .badge.warning {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3182ce;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .trend-chart {
+            height: 200px;
+            background: linear-gradient(to top, #e6fffa 0%, transparent 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trend-line {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            height: 140px;
+        }
+
+        .trend-line svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle input[type="checkbox"] {
+            width: 40px;
+            height: 20px;
+            appearance: none;
+            background: #cbd5e0;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle input[type="checkbox"]:checked {
+            background: #48bb78;
+        }
+
+        .toggle input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .toggle input[type="checkbox"]:checked::before {
+            transform: translateX(20px);
+        }
+
+        .toggle label {
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #a0aec0;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>📊 Data Quality Monitoring</h1>
+        <p>Audience: Global Admins, Data Stewards | Purpose: Identify programs needing attention</p>
+    </div>
+
+    <div class="alert-cards">
+        <div class="alert-card critical">
+            <div class="alert-card-label">Not Updated in 6+ Months</div>
+            <div class="alert-card-value">342</div>
+            <div class="alert-card-subtitle">11.7% of all programs</div>
+        </div>
+
+        <div class="alert-card warning">
+            <div class="alert-card-label">Not Updated in 12+ Months</div>
+            <div class="alert-card-value">89</div>
+            <div class="alert-card-subtitle">3.0% of all programs</div>
+        </div>
+
+        <div class="alert-card critical">
+            <div class="alert-card-label">No User Logins Ever</div>
+            <div class="alert-card-value">67</div>
+            <div class="alert-card-subtitle">Orphaned programs</div>
+        </div>
+
+        <div class="alert-card good">
+            <div class="alert-card-label">Data Quality Score</div>
+            <div class="alert-card-value">73%</div>
+            <div class="alert-card-subtitle">↑ 5% from last month</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Missing Data Summary</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data Gap</th>
+                    <th>Count</th>
+                    <th>% of Total</th>
+                    <th>Priority</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Missing Affiliate Assignment</td>
+                    <td><strong>65</strong></td>
+                    <td>2.2%</td>
+                    <td><span class="badge critical">Critical</span></td>
+                    <td><button class="btn btn-primary">Assign</button></td>
+                </tr>
+                <tr>
+                    <td>Missing Contact Information</td>
+                    <td><strong>127</strong></td>
+                    <td>4.3%</td>
+                    <td><span class="badge critical">Critical</span></td>
+                    <td><button class="btn btn-primary">Review</button></td>
+                </tr>
+                <tr>
+                    <td>Missing Demographics</td>
+                    <td><strong>203</strong></td>
+                    <td>6.9%</td>
+                    <td><span class="badge warning">Warning</span></td>
+                    <td><button class="btn btn-primary">Update</button></td>
+                </tr>
+                <tr>
+                    <td>Incomplete Profile (< 80% complete)</td>
+                    <td><strong>456</strong></td>
+                    <td>15.6%</td>
+                    <td><span class="badge warning">Warning</span></td>
+                    <td><button class="btn btn-primary">Complete</button></td>
+                </tr>
+                <tr>
+                    <td>Missing Program Delivery Type</td>
+                    <td><strong>178</strong></td>
+                    <td>6.1%</td>
+                    <td><span class="badge warning">Warning</span></td>
+                    <td><button class="btn btn-primary">Classify</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Programs Needing Attention</h2>
+        <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <button class="btn btn-primary">Send Reminder Emails</button>
+                <button class="btn btn-secondary">Export List</button>
+            </div>
+            <div style="font-size: 13px; color: #718096;">
+                Showing 10 of 342 programs
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>Program Name</th>
+                    <th>Last Updated</th>
+                    <th>Missing Data Flags</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Academic Mentoring Program</td>
+                    <td>18 months ago</td>
+                    <td><span class="badge critical">Affiliate</span> <span class="badge warning">Contact</span></td>
+                    <td><button class="btn btn-secondary">Edit</button></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Big Brothers Big Sisters - Seattle</td>
+                    <td>14 months ago</td>
+                    <td><span class="badge warning">Demographics</span></td>
+                    <td><button class="btn btn-secondary">Edit</button></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Youth Mentorship Initiative</td>
+                    <td>12 months ago</td>
+                    <td><span class="badge critical">Contact</span> <span class="badge warning">Delivery Type</span></td>
+                    <td><button class="btn btn-secondary">Edit</button></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>E-Mentoring Connect</td>
+                    <td>10 months ago</td>
+                    <td><span class="badge critical">Affiliate</span> <span class="badge warning">Delivery Type</span></td>
+                    <td><button class="btn btn-secondary">Edit</button></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Career Pathways Mentoring</td>
+                    <td>9 months ago</td>
+                    <td><span class="badge warning">Demographics</span> <span class="badge warning">Profile < 80%</span></td>
+                    <td><button class="btn btn-secondary">Edit</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Data Quality Score Trend</h2>
+        <div class="trend-chart">
+            <div class="trend-line">
+                <svg viewBox="0 0 600 140" preserveAspectRatio="none">
+                    <polyline
+                        fill="none"
+                        stroke="#38a169"
+                        stroke-width="3"
+                        points="
+                            0,90
+                            100,85
+                            200,80
+                            300,75
+                            400,72
+                            500,68
+                            600,60
+                        "
+                    />
+                    <circle cx="0" cy="90" r="4" fill="#38a169" />
+                    <circle cx="100" cy="85" r="4" fill="#38a169" />
+                    <circle cx="200" cy="80" r="4" fill="#38a169" />
+                    <circle cx="300" cy="75" r="4" fill="#38a169" />
+                    <circle cx="400" cy="72" r="4" fill="#38a169" />
+                    <circle cx="500" cy="68" r="4" fill="#38a169" />
+                    <circle cx="600" cy="60" r="4" fill="#38a169" />
+                </svg>
+            </div>
+        </div>
+        <div style="margin-top: 12px; font-size: 13px; color: #718096; text-align: center;">
+            Jan 2025 (68%) → Feb 2025 (69%) → Mar 2025 (71%) → Apr 2025 (72%) → May 2025 (73%)
+        </div>
+        <div style="margin-top: 8px; font-size: 12px; color: #a0aec0; text-align: center;">
+            Metric: % of programs with complete, current data (updated in past 6 months)
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Automated Alerts Configuration</h2>
+        <p style="font-size: 13px; color: #718096; margin-bottom: 16px;">
+            Configure automated actions to maintain data quality
+        </p>
+        <div class="toggle-group">
+            <div class="toggle">
+                <input type="checkbox" id="auto-email" checked>
+                <label for="auto-email">Auto-email programs not updated in 6 months</label>
+            </div>
+        </div>
+        <div class="timestamp">Last sent: 3 days ago (127 emails sent)</div>
+
+        <div class="toggle-group" style="margin-top: 16px;">
+            <div class="toggle">
+                <input type="checkbox" id="auto-pause">
+                <label for="auto-pause">Auto-pause programs inactive for 12 months</label>
+            </div>
+        </div>
+        <div class="timestamp">Not enabled - requires approval</div>
+    </div>
+
+    <div style="margin-top: 24px; text-align: center; font-size: 12px; color: #a0aec0;">
+        <p>Demo Dashboard - Data as of January 21, 2026</p>
+        <p style="margin-top: 4px;">Based on: Dashboard 2 from MetricsDashboards_Recommendations.md</p>
+    </div>
+</body>
+</html>
