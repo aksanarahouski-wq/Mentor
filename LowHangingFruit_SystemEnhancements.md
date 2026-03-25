@@ -14,45 +14,28 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ## Summary Statistics
 
-**Total Enhancement Areas Identified:** 28 (including 2 Strategic Initiatives)
+**Total Enhancement Areas Identified:** 25
 - **User Account & Data Management:** 3 items (#1, #2, #3)
-- **Admin Tools & Dashboards:** 1 item (#4 - consolidated)
-- **UI/UX Improvements:** 5 items (#5 - consolidated, #6, #7, #8, #9)
-- **Search & Discovery:** 2 items (#10, #11)
-- **NQMS Enhancements:** 6 items (#12, #13, #14, #15, #16, #17)
-- **Automation & Engagement:** 1 item (#18)
-- **System Integration:** 2 items (#19, #20)
-- **Permissions & Access:** 3 items (#21, #22, #23)
-- **Forms & Data Collection:** 2 items (#24, #25)
-- **Infrastructure:** 1 item (#26)
-- **Strategic Initiatives:** 2 items (#27 - NQMS Analytics Dashboard, #28 - Program Analytics & Visibility Dashboard)
+- **UI/UX Improvements:** 5 items (#4 - consolidated, #5, #6, #7, #8)
+- **Search & Discovery:** 3 items (#9, #10, #25)
+- **NQMS Enhancements:** 5 items (#11, #12, #13, #14, #15)
+- **Automation & Engagement:** 1 item (#16)
+- **Data Field Management:** 1 item (#17)
+- **Permissions & Access:** 4 items (#18, #19, #20, #21)
+- **Forms & Data Collection:** 2 items (#22, #23)
+- **Infrastructure:** 1 item (#24)
 
 **Priority Breakdown:**
-- **CRITICAL:** 2 items (Full Data Export, Assessment History & Versioning)
+- **CRITICAL:** 2 items (Full Data Export, Assessment History & Multi-Assessment Support)
 - **Immediate/Time-Sensitive:** 3 items
-- **High Value Quick Wins:** 9 items (includes Program Delivery filter)
+- **High Value Quick Wins:** 7 items
 - **Quality of Life (UI/UX):** 7 items
 - **Quality of Life (NQMS):** 5 items
 - **System Cleanup:** 4 items
-- **Affiliate/Admin Experience:** 3 items
+- **Affiliate/Admin Experience:** 5 items
 - **Infrastructure:** 1 item
-- **Strategic Foundation:** 3 items (includes Program Analytics Dashboard Phase 2-3)
+- **Strategic Foundation:** 2 items
 - **Nice to Have:** 2 items
-- **Strategic Initiatives:** 1 item (NQMS Analytics Dashboard)
-
-**Sources:**
-- Meeting 1 Summary: 5 items
-- Internal Strategy Meeting (Jan 8): 7 items
-- MC Strategy Initiation Plan: overlapping items
-- Orases Recommended Enhancements List: 13 items
-- Orases 2026 Strategic Opportunities: 5 items (4 enhancements + 1 strategic initiative)
-- Real-world testing feedback (Jan 2026): 1 item (#28 - Program Analytics & Visibility)
-
-**Key Insights from Orases Strategic Analysis:**
-- P2 (2025) delivered significant improvements to assessment management, reporting, and document management
-- Critical gaps remain in analytics/dashboards and comprehensive data export
-- Customer frustration level: 4/5 on analytics gap
-- Customer quote emphasis on demonstrating measurable impact to funders
 
 ---
 
@@ -60,7 +43,6 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ### 1. User Account Management
 
-**Source:** Meeting 1 Summary, Internal Strategy Meeting (Jan 8, 2026)
 
 **Current Issues:**
 - Unable to delete old user accounts
@@ -80,7 +62,6 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ### 2. Export Capabilities
 
-**Source:** Meeting 1 Summary, Internal Strategy Meeting (Jan 8, 2026)
 
 **Current Issues:**
 - Limited export options across various data types
@@ -96,7 +77,6 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ### 3. Duplicate Detection & Prevention
 
-**Source:** Internal Strategy Meeting (Jan 8, 2026), MC Strategy Initiation Plan
 
 **Current Issues:**
 - Duplicate program entries exist in the system (though not exact name matches)
@@ -114,38 +94,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 4. Dashboard Improvements & Data Quality Monitoring
+### 4. UI/UX Consistency & Page Layout Improvements
 
-**Source:** Meeting 1 Summary, Internal Strategy Meeting (Jan 8, 2026), Orases Recommended Enhancements List
-
-**Current Issues:**
-- No dashboards for data quality monitoring
-- No visibility into stale or problematic data
-- Cannot identify programs needing attention
-- Difficult to track data cleanup progress
-- Main dashboard needs cleanup for clarity and usability
-
-**Proposed Solutions:**
-- **Admin Data Quality Dashboards:**
-  - Programs needing attention
-  - Stale data indicators
-  - Last update timestamps
-  - Data quality metrics
-  - Automated alerts for programs that haven't updated in 6 months
-  - Ability to pause programs automatically if inactive
-- **Landing Page Dashboard Cleanup:**
-  - Clean up dashboard layout and organization
-  - Ensure Assessment Status table matches Reports → NQMS Assessments format
-  - Consistent data visualization across dashboard and reports
-  - Improved landing page experience for all user types
-
-**Note:** Consolidates admin data quality monitoring dashboards with general dashboard/landing page improvements.
-
----
-
-### 5. UI/UX Consistency & Page Layout Improvements
-
-**Source:** Meeting 1 Summary, Orases Recommended Enhancements List
 
 **Current Issues:**
 - Inconsistent UI patterns across the platform
@@ -171,9 +121,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 6. Password Reset & Login UX
+### 5. Password Reset & Login UX
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - Password reset process UI needs improvement
@@ -191,9 +140,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 7. Navigation & Hyperlink Improvements
+### 6. Navigation & Hyperlink Improvements
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - "Affiliate Region" column in Browse Programs is not clickable
@@ -209,9 +157,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 8. Program Status Visibility
+### 7. Program Status Visibility
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - Program status badges not definitive enough
@@ -226,9 +173,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 9. Badge Management
+### 8. Badge Management
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - Cannot reorder badges
@@ -241,9 +187,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 10. Program Search & Discovery Enhancements
+### 9. Program Search & Discovery Enhancements
 
-**Source:** Internal Strategy Meeting (Jan 8, 2026), Orases Recommended Enhancements List
 
 **Current Issues:**
 - Search functionality has known gaps and limitations
@@ -261,15 +206,11 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 - Enhanced search filters and parameters
 - Better search results presentation
 - **Add Program Delivery filter to Browse Programs page**
-- **Create dashboard/report showing programs by delivery type**
-
-**Related:** See #28 for expanded Program Delivery analytics and visibility dashboard
 
 ---
 
-### 11. Public-Facing Site Improvements
+### 10. Public-Facing Site Improvements
 
-**Source:** MC Strategy Initiation Plan, Orases Recommended Enhancements List
 
 **Current Issues:**
 - Public site promoted for families to find mentoring opportunities
@@ -287,30 +228,41 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 12. NQMS Multi-Assessment Support
+### 11. Assessment History & Multi-Assessment Support
 
-**Source:** Internal Strategy Meeting (Jan 8, 2026), MC Strategy Initiation Plan
 
 **Current Issues:**
 - System currently doesn't support multiple assessments per program
 - Programs approaching 3-year mark need to complete second assessments
+- No way to complete an assessment and start a new cycle while maintaining access to all historical data
+- Cannot view past assessments to analyze progress over time
+- Unable to compare ratings across assessment cycles
+- Cannot reference previous goals when setting new assessment goals
+- No timeline view of all assessment cycles for a program
+- No clear distinction between active and closed assessments
 - **Timeline:** This is a ticking clock item - needed soon as early adopters reach reassessment window
 
 **Proposed Solutions:**
-- Ability to archive old assessments
-- Start new assessment while maintaining history
-- Reports and dashboards should pull from latest assessment only
-- Clear workflow for closing one assessment and opening another
+- **Multiple Assessments Per Program:** Support many assessments per program, with only 1 active at a time
+- **Close and Open Assessments:** Clear workflow for closing an assessment and opening a new one
+- **Visibility:** Dashboard/list view showing Active and Closed assessments for each program
+- **Historical Access:** Access to view all past assessments for a program
+- **Comparison Tools:**
+  - Historical assessment data viewer/comparison tool
+  - Side-by-side assessment comparison
+  - Progress charts showing improvement over time
+- **Goal Reference:** Ability to reference past assessment data when setting new goals
+- **Reporting:** Reports should pull from active assessment only, with option to view historical reports
+- **Timeline View:** Timeline showing all assessment cycles for a program
+
+**Business Impact:** HIGH - Critical for tracking program progress over time and demonstrating measurable improvements to funders
 
 **Note:** NQMS side has recently added an archiving feature that could serve as a model for other archival needs in the system.
 
-**Related:** See also #16 (Assessment History & Versioning) which addresses viewing and comparing multiple completed assessment cycles over time.
-
 ---
 
-### 13. NQMS Assessment Workflow Improvements
+### 12. NQMS Assessment Workflow Improvements
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - "Edit Assessment" button on Program Details page disrupts consistent workflow
@@ -327,9 +279,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 14. NQMS Assessment Question Management
+### 13. NQMS Assessment Question Management
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - No ability to delete assessment questions
@@ -344,9 +295,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 15. NQMS Reviewer Progress Tracking
+### 14. NQMS Reviewer Progress Tracking
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - No way for reviewers to visually track changes or progress within assessment
@@ -363,36 +313,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 16. Assessment History & Versioning
+### 15. Full Data Export for Research
 
-**Source:** Orases 2026 Strategic Opportunities & Recommendations (Dec 17, 2025)
-
-**Current Issues:**
-- No way to complete an assessment and start a new cycle while maintaining access to all historical data
-- Cannot view past assessments to analyze progress over time
-- Unable to compare ratings across assessment cycles
-- Cannot reference previous goals when setting new assessment goals
-- No timeline view of all assessment cycles for a program
-
-**Proposed Solutions:**
-- Mark assessment as "complete" and start new assessment cycle
-- Access to view all past assessments for a program
-- Historical assessment data viewer/comparison tool
-- Reference past assessment data when setting new goals
-- Timeline view showing all assessment cycles
-- Reports showing progress across multiple assessment cycles
-- Side-by-side assessment comparison
-- Progress charts showing improvement over time
-
-**Business Impact:** HIGH - Critical for tracking program progress over time and demonstrating measurable improvements to funders
-
-**Note:** Different from #12 (QMS Multi-Assessment Support) which focuses on the mechanics of creating new assessments. This enhancement (#16) is about viewing, comparing, and analyzing completed historical assessments.
-
----
-
-### 17. Full Data Export for Research
-
-**Source:** Orases 2026 Strategic Opportunities & Recommendations (Dec 17, 2025)
 
 **Current Issues:**
 - No comprehensive export showing full assessment history
@@ -418,9 +340,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 18. Automation & Engagement Features
+### 16. Automation & Engagement Features
 
-**Source:** Internal Strategy Meeting (Jan 8, 2026), MC Strategy Initiation Plan
 
 **Current Issues:**
 - No automated reminders for programs to update profiles
@@ -441,29 +362,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 19. Integration of MC & NQMS Tools
+### 17. Data Field Enhancements
 
-**Source:** Internal Strategy Meeting (Jan 8, 2026), MC Strategy Initiation Plan
-
-**Current Issues:**
-- MC and NQMS are considered separate systems with distinct product ownership
-- System improvements managed separately with vendor
-- No unified view or navigation between tools
-- Users must context-switch between systems
-
-**Proposed Solutions:**
-- Integration of MC and NQMS tools under one unified system
-- Consistent navigation and user experience
-- Shared data where appropriate
-- Consider unified naming convention that encompasses both tools
-
-**Strategic Note:** Historically, these tools functioned under a single system; MC was relaunched in 2023, with NQMS joining in 2024. Need to determine if/how to reintegrate.
-
----
-
-### 20. Data Field Enhancements
-
-**Source:** Internal Strategy Meeting (Jan 8, 2026), MC Strategy Initiation Plan
 
 **Current Issues:**
 - Organization field ("BBBS concept") was discontinued in 2023 launch
@@ -484,9 +384,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 21. Program Admin Permission Enhancements
+### 18. Program Admin Permission Enhancements
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - Program Admins cannot self-pause their programs (must contact support)
@@ -503,9 +402,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 22. Affiliate Management UX Improvements
+### 19. Affiliate Management UX Improvements
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - "Global Admin" field appears on Affiliate edit page (may not be needed)
@@ -520,37 +418,154 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 - Add ability for Affiliates and Global Admin to filter by Program Delivery
 - Streamline affiliate administration workflows
 
-**Related:** See #28 for comprehensive Program Analytics & Visibility Dashboard that addresses Program Delivery filtering and e-mentoring program visibility issues.
-
 ---
 
-### 23. Cross-Affiliate NQMS Permissions Enhancement
+### 20. Affiliate Deletion & Inactivation Management
 
-**Source:** Orases 2026 Strategic Opportunities & Recommendations (Dec 17, 2025)
 
 **Current Issues:**
-- Affiliate staff cannot easily work with programs in other states on NQMS
-- ZIP code-based permissions prevent cross-state access
-- Current workaround exists but is not ideal
-- Secondary affiliate assignment model may not be the right approach
-- Consulting relationships not well-supported by current permission model
+- Affiliate can be marked "inactive" but behavior is unclear and inconsistent
+- When Affiliate is marked inactive but still has zip codes assigned under Service Area, programs remain assigned to that Affiliate
+- No clear way to delete an Affiliate
+- No automated handling of program assignments when Affiliate is inactivated
+- Users must manually uncheck all zip codes to detach programs from inactive Affiliate
+- "Inactive" status doesn't prevent program-to-affiliate matching via Service Area zip codes
+- Confusion about what "inactive" should do vs. what it actually does
+- No clear workflow for decommissioning an Affiliate
+
+**Real-World User Feedback:**
+- _"What is the function of marking an Affiliate 'inactive'? It looks like when it is marked inactive but still has zip codes assigned under Service Area, the programs are still assigned to that Affiliate. Should we be removing the Service Area zip codes in addition to marking it 'inactive'?"_
+- _"I set it to inactive and the program still show it was affiliated. To remove from it, I had to uncheck the zip code (02861). Where exactly can you delete an affiliate region, is that a new button or process?"_
+
+**Decision Points:**
+Need to determine the desired behavior and implementation approach:
+
+**Option 1: Auto-Remove Service Areas on Inactivation**
+- When Affiliate is marked inactive, automatically remove all Service Area zip codes
+- This detaches all programs from the Affiliate immediately
+- Pros: Clear separation, no orphaned assignments
+- Cons: Data loss if Affiliate needs to be reactivated
+
+**Option 2: Change Matching Logic**
+- Keep Service Area zip codes intact when Affiliate marked inactive
+- Update program-to-affiliate matching logic to only match active Affiliates
+- Programs would no longer show affiliation to inactive Affiliates
+- Pros: Preserves Service Area configuration for potential reactivation
+- Cons: More complex logic, potential for confusion about why programs aren't matching
+
+**Option 3: Add Hard Delete Capability**
+- Add ability to permanently delete an Affiliate
+- Require confirmation and handling of dependent data
+- Determine what happens to programs assigned to deleted Affiliate
+- Consider soft delete vs. hard delete implications
 
 **Proposed Solutions:**
-- Rethink current solution approach
-- Evaluate alternative permission models for consulting relationships
-- Better integration with existing permission system
-- Reports showing cross-affiliate program relationships
-- Maintain proper audit trails for cross-affiliate work
+- **Clarify "Inactive" Status Behavior:**
+  - Define and document what "inactive" should do
+  - Update UI to clearly communicate the effects of marking Affiliate inactive
+  - Add warning/confirmation when marking Affiliate inactive
 
-**Business Impact:** MEDIUM - Current workaround exists but needs improvement
+- **Implement Consistent Logic:**
+  - Choose and implement one of the three options above
+  - Update program-to-affiliate matching logic accordingly
+  - Ensure Browse Programs reflects correct affiliations based on active status
 
-**Status:** P2 delivered a workaround with specific program assignment, but users report it's not ideal. Needs refinement.
+- **Add Delete Capability (if needed):**
+  - Determine if hard delete is required or if inactive status is sufficient
+  - If delete is needed, add "Delete Affiliate" functionality
+  - Implement safeguards (confirmation, check for dependent data)
+  - Document impact on programs and Service Areas
+
+- **Improve User Experience:**
+  - Add confirmation dialogs explaining what will happen to programs
+  - Provide clear workflow for decommissioning an Affiliate
+  - Consider bulk Service Area removal option if Option 1 is not implemented
+  - Add audit trail for Affiliate status changes
+
+**Business Impact:** MEDIUM - Affects Affiliate lifecycle management and data integrity
+
+**User Impact:** Affiliate Admins, Global Admins managing Affiliate records
+
+**Pages Affected:** Browse Affiliates, Edit Affiliate, Program assignment logic
+
+**Related:** See #1 (User Account Management) for similar deletion/inactivation needs for user accounts.
 
 ---
 
-### 24. Form & Field Alignment Issues
+### 21. National Affiliate for Orphan Programs (Safety Net Approach)
 
-**Source:** Orases Recommended Enhancements List
+
+**Current Issues:**
+- "Orphan programs" exist - programs not assigned to any affiliate because their zip codes don't match any affiliate's service area coverage
+- Programs are currently assigned to affiliates by matching program zip codes with affiliate service area zip codes
+- New capability to give affiliate users scoped/limited access to single programs doesn't work for orphan programs (no parent affiliate)
+- Approximately 750 orphan programs identified (as of January 2026)
+- No easy way to search/filter for programs without affiliate assignment
+- Current workaround requires manually creating affiliate and adding all orphan program zip codes to affiliate's service area
+- Maintaining orphan program assignments is time-consuming when affiliates change or new programs are added
+- When affiliates become inactive or zip codes need to be transferred, requires unchecking/rechecking potentially hundreds of zip codes
+- Quarterly zip code updates require manual maintenance for orphan programs
+
+**Proposed Solutions:**
+
+**Option A: Manual/Script Approach (Temporary)**
+- Create "Mentor National" affiliate
+- Run script to identify all orphan programs
+- Manually add their zip codes to the national affiliate's service area coverage
+- Requires ongoing maintenance: monthly/quarterly updates as programs change
+- Time-consuming to maintain when affiliates deactivate or programs move
+
+**Option B: Programmatic Safety Net Approach (Recommended)**
+- Create "Mentor National" or "Global" affiliate with special behavior
+- Treat this affiliate as a "unicorn" - system exception with different matching logic
+- **Key Feature:** Does not match on zip code coverage at all
+- Automatically captures any program that doesn't match any other affiliate's service area
+- Acts as a "safety net" - "everybody who didn't get a home will land in the safety net"
+- No need to specify or maintain service areas for this affiliate
+- Automatically handles:
+  - Programs with invalid/incorrect zip codes
+  - Programs in states without affiliate coverage
+  - Programs when affiliates become inactive
+  - New programs in unaffiliated areas
+- Eliminates need for constant manual zip code updates
+- Provides visibility into programs that may have data quality issues (wrong zip codes)
+
+**Implementation Details (Option B):**
+- System checks program zip code against all active affiliates' service areas
+- If match found → assign to that affiliate(s) (existing behavior)
+- If no match found → automatically assign to National/Global affiliate (new behavior)
+- Programs can still be assigned to multiple affiliates if zip codes match multiple service areas
+- National affiliate acts as catch-all for unmatched programs
+
+**Benefits of Safety Net Approach:**
+- Ensures every program has an affiliate (no orphans)
+- Enables scoped affiliate access feature to work for all programs
+- Reduces manual administrative burden
+- Self-healing: catches programs with data entry errors automatically
+- No need to update zip codes when affiliates change status
+- Provides data quality visibility (programs in National affiliate may indicate zip code issues)
+- Scales automatically as new programs are added
+
+**Business Impact:** MEDIUM-HIGH - Enables new affiliate permission features, reduces administrative burden, improves data quality
+
+**User Impact:** Affiliate Admins, Global Admins, Program Admins
+
+**Pages Affected:** Browse Programs, Affiliate service area management, Program assignment logic
+
+**Related:**
+- See #20 (Affiliate Deletion & Inactivation Management) for related affiliate lifecycle issues
+- See #9 (Program Search & Discovery Enhancements) for filtering by affiliate status
+
+**Implementation Complexity:** MEDIUM - Requires changes to affiliate-to-program matching logic
+
+**Quick Win Component:** Option A can be implemented immediately via script
+
+**Strategic Component:** Option B provides long-term sustainable solution with reduced maintenance
+
+---
+
+### 22. Form & Field Alignment Issues
+
 
 **Current Issues:**
 - Backend program application form doesn't match front-end
@@ -570,9 +585,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 25. Inquiries Module Cleanup
+### 23. Inquiries Module Cleanup
 
-**Source:** Orases Recommended Enhancements List
 
 **Current Issues:**
 - "ROLE" field still exists in Inquiries
@@ -586,9 +600,8 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 26. SharePoint Migration for Document Storage
+### 24. SharePoint Migration for Document Storage
 
-**Source:** Orases 2026 Strategic Opportunities & Recommendations (Dec 17, 2025)
 
 **Current Issues:**
 - Documents stored on local file system
@@ -612,215 +625,69 @@ This document consolidates all identified low-hanging fruit and system enhanceme
 
 ---
 
-### 27. Analytics Dashboard (STRATEGIC INITIATIVE)
+### 25. Public Search Iframe & Rich Text Support
 
-**Source:** Orases 2026 Strategic Opportunities & Recommendations (Dec 17, 2025)
-
-**Current Issues:**
-- No interactive dashboards or data visualization
-- Users cannot demonstrate program effectiveness to stakeholders and funders
-- Forcing manual workarounds via Excel
-- Cannot track trends or show improvements over time
-- Old system had "really nice dashboard things" that are now missing
-
-**Proposed Solutions:**
-- Interactive dashboards with key metrics visualization
-- Trend analysis showing program improvements over time
-- Filtering capabilities (by affiliate, program type, date range)
-- Export capability for dashboard views
-- Longitudinal data visualization (baseline → improvement tracking)
-- Shareable views for funders and stakeholders
-
-**Business Impact:** HIGH - Critical for funding justification
-
-**User Frustration:** 4/5 intensity (per customer interviews)
-
-**Complexity:** HIGH - Significant development effort
-
-**Customer Quote:** _"We don't have we haven't built that in in the new system here yet, but... our old system, actually had some really nice dashboard things"_
-
-**Note:** This is a major strategic initiative that goes beyond system enhancements. While critical for user needs, it represents a significant investment and should be planned as a dedicated project rather than grouped with quick wins.
-
-**Related:** See #28 for Program-focused analytics dashboard (complementary to NQMS assessment analytics)
-
----
-
-### 28. Program Analytics & Visibility Dashboard
-
-**Source:** Real-world testing feedback (Jan 2026), Orases Recommended Enhancements List
 
 **Current Issues:**
-- No dashboard to view programs by different attributes (program type, status, affiliate, state, delivery type)
-- E-mentoring only programs get "lost" because they don't fit geographic affiliate model
-- Programs without affiliate assignment lack visibility
-- Global Admins cannot easily see programs by Program Delivery type
-- No way to identify patterns or gaps in program coverage
-- Difficult to answer questions like:
-  - How many e-mentoring programs do we have?
-  - Which states have no affiliate coverage?
-  - What program types are most common by region?
-  - Which programs are pending vs. approved by affiliate?
+- **Public Search Iframe (Embedded Program Profile):**
+  - Search iframe embedded in external sites is missing critical program data
+  - 'The mentor role description' field not included in search API response
+  - Logo size is not displaying correctly in iframe
+  - Limited program information available to public searchers
 
-**Real-World Issue (January 2026):**
-During testing, a Program was not showing an Affiliate even though the Affiliate had the Program's zip code assigned. The issue: the Program had "e-mentoring only" vs. "community-based" or "site-based." There's no way to filter by Program Delivery in Browse Programs, so these programs effectively get lost in the system.
+- **Rich Text Formatting:**
+  - Text areas throughout the site do not support enriched formatting
+  - Program description and other text fields cannot display formatted text
+  - No support for bold, italic, lists, links, or other formatting in text areas
+  - Content is displayed as plain text only, reducing readability and engagement
 
 **Proposed Solutions:**
 
-**Phase 1: Basic Filtering**
-- Add Program Delivery filter to Browse Programs page (Community-based, Site-based, E-mentoring)
-- Add filter for programs missing Affiliate assignment
-- Enhance existing filters for better program discovery
+**Phase 1: Search Iframe Data Completeness**
+- Add 'The mentor role description' to public search API response
+- Fix logo sizing issues in iframe display
+- Ensure all relevant program fields are included in search results
+- Test iframe display across different embedding sites
 
-**Phase 2: Analytics Dashboard**
-- Dashboard showing program counts by:
-  - Program Type (1-to-1, group, peer, etc.)
-  - Program Status (Approved, Pending, Paused, Deleted)
-  - Affiliate assignment
-  - State/Geographic distribution
-  - Program Delivery type (Community, Site, E-mentoring, Hybrid)
-  - Population served
-  - Youth served ranges
-- Visual charts (bar charts, maps, pie charts)
-- Drill-down capability to see program lists
-- Export dashboard views
+**Phase 2: Rich Text Editor Implementation**
+- Implement rich text editor (e.g., CKEditor, TinyMCE, Quill) for program forms
+- Add rich text support for relevant text areas:
+  - Program description
+  - Mentor role description
+  - Other program detail fields that would benefit from formatting
+- Support common formatting: bold, italic, underline, lists (ordered/unordered), hyperlinks
+- Editor saves content as HTML to database
+- Backend HTML sanitization for security (prevent XSS attacks)
 
-**Phase 3: Gap Analysis**
-- Identify states/regions with no programs
-- Show affiliate coverage gaps
-- Highlight programs that need affiliate assignment
-- E-mentoring program inventory and management
+**Phase 3: Display & Testing**
+- Update display components to render HTML content properly
+- Ensure iframe displays formatted HTML correctly
+- Test formatting across all display contexts:
+  - Program edit forms
+  - Public search iframe display
+  - Browse Programs view
+  - Program detail pages
+- Verify HTML sanitization is working correctly
 
-**Business Impact:** MEDIUM-HIGH - Improves program visibility, admin efficiency, and strategic planning
+**Business Impact:** MEDIUM - Improves public-facing program visibility and content richness
 
-**Use Cases:**
-- Global Admins managing programs that don't fit geographic model
-- Identifying affiliate coverage gaps
-- Strategic planning for program recruitment
-- Understanding program portfolio composition
-- Managing e-mentoring programs that serve multiple states
+**User Impact:**
+- External site visitors see more complete program information
+- Program administrators can create more engaging, readable content
+- Better presentation of program details to potential mentors
 
-**Related Issues:**
-- Programs with e-mentoring only delivery may need different affiliate assignment model
-- Need to decide: Should e-mentoring programs always go under MENTOR National?
-- How to handle affiliates that only do e-mentoring?
+**Pages Affected:**
+- Public search iframe (embedded on external sites)
+- Program edit forms
+- Browse Programs
+- Program detail pages
+- Public-facing program profiles
 
-**Complexity:** MEDIUM - Builds on existing Browse Programs functionality
+**Complexity:** MEDIUM - Requires both frontend (rich text editor) and backend (API updates) changes
 
-**Quick Win Component:** Adding Program Delivery filter to Browse Programs (Phase 1) is relatively straightforward
+**Quick Win Component:** Adding missing 'mentor role description' to API response (Phase 1)
 
-**Strategic Component:** Full analytics dashboard (Phase 2-3) requires more planning and development
-
----
-
-## Priority Recommendations
-
-### CRITICAL / Must-Have (Per Orases Strategic Analysis):
-1. **Full Data Export for Research** (#17) - CRITICAL for evaluation work and demonstrating impact to funders
-2. **Assessment History & Versioning** (#16) - HIGH priority for tracking program progress over time
-
-### Immediate / Time-Sensitive:
-3. **QMS Multi-Assessment Support** (#12) - Early adopters reaching reassessment window
-4. **User Activity Tracking** (#1) - Foundational for data cleanup initiatives
-5. **User Account Deletion** (#1) - System hygiene issue causing database clutter
-
-### High Value / Quick Wins:
-6. **Admin Dashboards** (#4) - Enables data quality monitoring and cleanup
-7. **Enhanced Export Capabilities** (#2) - Supports multiple use cases and analysis
-8. **Program Delivery Filter** (#28 Phase 1) - Add to Browse Programs, prevents e-mentoring programs from getting "lost"
-9. **Filter Panel Improvements** (#5) - Collapsible filters, above fold placement (affects all major pages)
-10. **Program Admin Self-Service** (#21) - Self-pause capability, reduces support burden
-11. **Automated Reminders** (#18) - Drives profile updates with minimal manual effort
-12. **Duplicate Detection** (#3) - Improves data quality and reduces confusion
-13. **Dashboard Cleanup** (#4) - Consistent presentation, improved usability
-14. **Navigation Hyperlinks** (#7) - Clickable Affiliate Region, hyperlinked program names
-
-### Quality of Life Improvements - UI/UX:
-15. **Filter UI Standardization** (#5) - Consistent experience across all pages
-16. **Program Status Badges** (#8) - More definitive visual indicators
-17. **Form Field Alignment** (#24) - Front-end/back-end consistency
-18. **Password Reset UX** (#6) - Improved onboarding for new program admins
-19. **Breadcrumb Navigation** (#5) - Improves navigation and orientation
-20. **Search Functionality** (#10) - Better user experience for finding programs
-21. **Public-Facing Site** (#11) - Better mentee experience and clearer messaging
-
-### Quality of Life Improvements - NQMS Specific:
-22. **NQMS Workflow Consistency** (#13) - Remove Edit Assessment from Program Details
-23. **Assessment Question Management** (#14) - Add delete capability, fix help text
-24. **NQMS Reviewer Progress** (#15) - Visual tracking, remember last position
-25. **Assessment Field Labels** (#13) - Clearer "Notes" field purpose
-26. **"Other" Checkbox Consistency** (#14) - Always require explanatory text
-
-### System Cleanup / Data Hygiene:
-27. **Inquiries ROLE Field** (#25) - Remove unused field
-28. **Form Field Cleanup** (#24) - Remove Country field if not used on front-end
-29. **Confirmation Emails** (#24) - Add for program submissions
-30. **User Account Management** (#1) - System hygiene and security
-
-### Affiliate & Admin Experience:
-31. **Affiliate Management UX** (#22) - Postal code selection, Global Admin field review
-32. **Affiliate Record Creation** (#22) - Decide permissions model
-33. **Cross-Affiliate NQMS Permissions** (#23) - Improve workaround, refine permission model
-
-### Infrastructure & Backend:
-34. **SharePoint Migration** (#26) - Document storage scalability and reliability (HIGH complexity)
-
-### Foundation for Long-Term Strategy:
-35. **MC & NQMS Integration** (#19) - Unified system experience
-36. **Data Field Review** (#20) - Organization/affiliation structure clarification
-37. **Program Analytics Dashboard** (#28 Phase 2-3) - Visual analytics, gap analysis, portfolio insights
-
-### Nice to Have:
-38. **Badge Reordering** (#9) - Flexible badge display priority
-39. **Export Assessment Goals** (#13) - Reevaluate necessity for approved assessments
-
-### Strategic Initiatives (Not Quick Wins):
-40. **NQMS Analytics Dashboard** (#27) - Assessment analytics, major initiative, HIGH complexity, HIGH user need
-
-### Consider for Future Discussion:
-- **AI-Powered Features** (#18) - Chatbot support, automated engagement
-- **Mentee Search Support** (#10, #11) - Evaluate workaround vs. full implementation
-- **E-mentoring Affiliate Model** (#28) - How to handle programs that don't fit geographic model
-
----
-
-## Strategic Rationale
-
-**Why Focus on Low-Hanging Fruit:**
-- Delivers immediate value to current users
-- Builds credibility and trust in the platform
-- Reduces manual burden on staff
-- Creates foundation for larger initiatives
-- Can often be completed in parallel with strategic planning
-- Lower risk, faster ROI than major new features
-
-**Connection to Broader Strategy:**
-- Admin dashboards and export capabilities directly support **Data Cleanup Initiative**
-- User activity tracking is foundational for positioning system as **source of truth**
-- UI improvements reduce **training burden** caused by turnover
-- QMS enhancements maintain **quality assessment credibility**
-
----
-
-## Next Steps
-
-### For Orases Team:
-- [ ] Compile comprehensive list of identified system improvements
-- [ ] Combine Orases backlog with Mentor's Section 9 requirements
-- [ ] Provide effort estimates for each enhancement
-- [ ] Prepare proposal for low-hanging fruit enhancements
-- [ ] Identify dependencies and logical groupings
-
-### For Mentor National:
-- [ ] Sandy to export teamwork requirements list by Friday
-- [ ] Identify priorities among low-hanging fruit items
-- [ ] Determine budget allocation for quick wins work stream
-- [ ] Provide access to Section 9 requirements documentation
-
-### Collaborative:
-- [ ] Review combined requirements list in follow-up meeting
-- [ ] Establish Stream 1: Quick wins / system enhancements work stream
-- [ ] Define acceptance criteria for each enhancement
-- [ ] Plan phased rollout approach
+**Strategic Component:** Full rich text support implementation (Phase 2-3)
 
 ---
 
@@ -834,7 +701,7 @@ This initiative represents **Stream 1** in the three-stream parallel approach:
   - Delivers tangible value quickly
 
 - **Stream 2: Data Cleanup Strategy**
-  - Requires dashboard/reporting tools from Stream 1
+  - Requires reporting tools from Stream 1
   - Affiliate-assisted review and validation
 
 - **Stream 3: Long-Term Vision**
@@ -848,7 +715,6 @@ This initiative represents **Stream 1** in the three-stream parallel approach:
 **How We'll Measure Success:**
 - Reduction in manual support requests
 - Improved data export utilization
-- Dashboard adoption rates among admins
 - Time savings in data quality monitoring
 - User satisfaction with UI improvements
 - QMS reassessment completion rates
@@ -874,9 +740,15 @@ This initiative represents **Stream 1** in the three-stream parallel approach:
 | January 21, 2026 | Added 7 new enhancement areas from internal meeting minutes and MC strategy plan | Aksana Rahouski |
 | January 21, 2026 | Added 13 new enhancement areas from Orases Confluence Recommended Enhancements List | Aksana Rahouski |
 | January 21, 2026 | Added 5 items from Orases 2026 Strategic Opportunities document (Assessment History, Full Data Export, Cross-Affiliate Permissions, SharePoint Migration, Analytics Dashboard) | Aksana Rahouski |
-| January 21, 2026 | Added #28 Program Analytics & Visibility Dashboard based on real-world testing feedback - e-mentoring programs getting "lost" without Program Delivery filter | Aksana Rahouski |
+| January 21, 2026 | Added #30 Program Analytics & Visibility Dashboard based on real-world testing feedback - e-mentoring programs getting "lost" without Program Delivery filter | Aksana Rahouski |
 | January 21, 2026 | Consolidated duplicates: merged #5 & #24 (UI/UX & Filter Panels), merged #4 & #6 (Dashboards). Reduced from 31 to 29 enhancement areas. Renumbered all items and updated cross-references. | Aksana Rahouski |
 | January 21, 2026 | Removed #11 Learning Management System (LMS) Integration. Reduced from 29 to 28 enhancement areas. Renumbered sections 11-29 and updated all cross-references. | Aksana Rahouski |
 | January 21, 2026 | Added source documentation to all 28 enhancement items, indicating which source documents contributed to each item (Meeting 1 Summary, Internal Strategy Meeting, Orases Recommended Enhancements List, Orases 2026 Strategic Opportunities, Real-world testing feedback). | Aksana Rahouski |
 | January 21, 2026 | MAJOR REORGANIZATION: Reordered all 28 enhancement sections to follow the grouping structure defined in Summary Statistics. All sections renumbered sequentially (1-28) according to new order. Updated all cross-references throughout document. New grouping order: User Account & Data Management (1-3), Admin Tools & Dashboards (4), UI/UX Improvements (5-9), Search & Discovery (10-11), NQMS Enhancements (12-17), Automation & Engagement (18), System Integration (19-20), Permissions & Access (21-23), Forms & Data Collection (24-25), Infrastructure (26), Strategic Initiatives (27-28). | Aksana Rahouski |
 | January 21, 2026 | Moved Summary Statistics section to the top of the document (after Overview section) for better visibility and easier reference to enhancement categories and priorities. | Aksana Rahouski |
+| January 22, 2026 | Added #23 Affiliate Deletion & Inactivation Management based on real-world testing feedback - unclear behavior when marking Affiliate inactive, programs remain assigned, no clear delete option. Increased total from 28 to 29 enhancement areas. Renumbered sections 23-28 to 24-29 and updated all cross-references throughout document. Updated Permissions & Access category from 3 to 4 items and Affiliate/Admin Experience from 3 to 4 items. | Aksana Rahouski |
+| January 22, 2026 | Added #25 National Affiliate for Orphan Programs (Safety Net Approach) from Meeting 2 (NQMS Launch Planning) - programmatic solution to automatically assign orphan programs (programs without affiliate) to a National/Global affiliate that acts as safety net. Increased total from 29 to 30 enhancement areas. Renumbered sections 25-29 to 26-30 and updated all cross-references throughout document. Updated Permissions & Access category from 4 to 5 items and Affiliate/Admin Experience from 4 to 5 items. | Aksana Rahouski |
+| January 27, 2026 | Removed all dashboard-related items (#4 Dashboard Improvements, #29 Analytics Dashboard, #30 Program Analytics & Visibility Dashboard) as dashboards are now tracked in a separate file. Reduced total from 30 to 27 enhancement areas. Removed "Admin Tools & Dashboards" category and "Strategic Initiatives" category. Renumbered sections 5-28 to 4-27 and updated all cross-references, priority recommendations, sources, and related sections throughout document. | Aksana Rahouski |
+| January 27, 2026 | Added #28 Public Search Iframe & Rich Text Support based on client feedback - missing mentor role description in public search iframe API response, incorrect logo sizing, and need for rich text formatting support in text areas (program description, mentor role description). Increased total from 27 to 28 enhancement areas. Updated Search & Discovery category from 2 to 3 items. Added to Priority Recommendations under Quality of Life Improvements - UI/UX. | Aksana Rahouski |
+| January 27, 2026 | Removed Sources section and all source references from enhancement items. Removed Key Insights from Orases Strategic Analysis section. Removed #18 Integration of MC & NQMS Tools. Reduced total from 28 to 27 enhancement areas. Renumbered sections 19-28 to 18-27 and updated all cross-references throughout document. Updated System Integration category to Data Field Management with 1 item. | Aksana Rahouski |
+| January 27, 2026 | Removed #21 Cross-Affiliate NQMS Permissions Enhancement. Reduced total from 26 to 25 enhancement areas. Renumbered sections 22-26 to 21-25 and updated all cross-references throughout document. Updated Permissions & Access category from 5 to 4 items. | Aksana Rahouski |

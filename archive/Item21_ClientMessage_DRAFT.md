@@ -1,0 +1,196 @@
+# DRAFT: Client Message - National Affiliate for Orphan Programs
+
+**To:** [Client Name/Team]
+**From:** Aksana Rahouski, Orases
+**Date:** January 28, 2026
+**Re:** Important Update on Orphan Program Volume & Recommendation to Discuss Approach (Item #21)
+
+---
+
+## Purpose
+
+We've completed our analysis of "orphan programs" (programs not assigned to any affiliate) and discovered new information about the scale of this challenge that significantly impacts our recommended approach. We'd like to schedule time to discuss this finding and our revised recommendation.
+
+---
+
+## Background: What We Discovered
+
+As we worked through Item #21 (National Affiliate for Orphan Programs), we ran SQL queries to understand the scope of the orphan program challenge.
+
+**Key Finding:** We discovered that approximately **750 programs** are currently not assigned to any affiliate because their location ZIP codes don't match any affiliate's service area coverage.
+
+This volume is significantly higher than initially anticipated and represents a substantial portion of your total program inventory. These programs span multiple states with high geographic variability in their ZIP codes.
+
+**Why This Matters:**
+
+This creates several immediate challenges:
+- Programs lack clear ownership and management responsibility
+- New scoped affiliate access features cannot work for these programs (requires parent affiliate)
+- No automated way to identify or manage these programs
+- Data quality visibility is reduced
+
+But more importantly, **this volume changes our recommended approach** for solving the problem.
+
+---
+
+## Impact on Our Original Approach
+
+When we initially discussed Item #21, we outlined **Option A: Manual/Script Approach** - creating a "Mentor National" affiliate and manually adding all orphan program ZIP codes to its service area coverage.
+
+**This approach made sense when we thought orphan program volume was smaller.**
+
+However, now that we know the actual volume is **750+ programs** spanning multiple states with high geographic variability:
+
+**Option A creates significant challenges:**
+
+- **Initial setup complexity:** We would need to:
+  - Extract all unique ZIP codes from 750+ programs (each program may have multiple locations)
+  - Identify the state for each ZIP code
+  - Manually add every State:ZIP code combination to the National Affiliate's service area
+  - Estimated effort: 18-34 hours of manual data extraction and entry
+
+- **Ongoing maintenance burden:** The service area would require continuous updates:
+  - New programs are added without affiliate coverage
+  - Existing programs change or add locations (new ZIP codes)
+  - Affiliates expand or reduce coverage (programs move between orphan/affiliated status)
+  - Affiliates become inactive (all their programs become orphans)
+  - Data cleanup efforts modify program locations and ZIP codes
+  - Estimated ongoing effort: ~98 hours per year (approximately 2.5 weeks of work)
+
+**Key concern:** With 750+ programs, manually maintaining a static list of all their ZIP codes becomes a time-consuming, ongoing responsibility that doesn't scale. As your team works through data cleanup initiatives (which will modify program locations), the maintenance burden increases further.
+
+---
+
+## Alternative Approach Worth Discussing: Option B - Programmatic Safety Net
+
+Given the volume challenge with Option A, we'd like to discuss an alternative approach that was previously mentioned but may now be more appropriate given the scale.
+
+### The Concept: Automatic Safety Net
+
+Instead of manually maintaining ZIP codes, we could create a "Mentor National" affiliate that functions differently from regular affiliates:
+
+**How it would work:**
+- This affiliate wouldn't match on ZIP codes at all (unlike regular affiliates)
+- It would automatically capture any program that doesn't match any other affiliate's service area
+- Think of it as: "everybody who didn't get a home will land in the safety net"
+
+**Technical behavior:**
+```
+For each program:
+1. System checks program ZIP codes against all active regular affiliates
+2. If match found → assign to that affiliate (existing behavior)
+3. If no match found → automatically assign to National affiliate (new behavior)
+```
+
+### Potential Benefits to Discuss
+
+**Maintenance:**
+- No scripts to run monthly or quarterly
+- No ZIP codes to manually add or update
+- System automatically handles all program assignments
+
+**Scalability:**
+- Works for 750 programs today, scales indefinitely
+- Handles all states and ZIP codes automatically
+- No additional maintenance as program volume grows
+
+**Self-Healing:**
+- When programs change locations → automatically reassigns
+- When affiliates expand coverage → programs automatically move from National to regional affiliate
+- When affiliates become inactive → their programs automatically move to National affiliate
+- When incorrect ZIP codes are fixed → programs automatically reassign to correct affiliate
+
+**Data Quality:**
+- Programs in the National affiliate serve as a "data quality report"
+- Easy identification of programs that may have incorrect or invalid ZIP codes
+- Incentivizes cleanup (programs "graduate" from National when data is corrected)
+
+**Feature Enablement:**
+- Every program has a parent affiliate (no orphans)
+- Scoped affiliate access feature works for 100% of programs
+- Consistent user experience across all programs
+
+### Considerations & Trade-offs
+
+**What This Would Require:**
+- Code changes to affiliate-to-program matching logic (medium complexity)
+- Testing to ensure matching logic works correctly
+- Estimated timeline: 6-7 weeks for development, testing, and deployment
+
+**Questions to Discuss:**
+- Does the maintenance savings justify the development investment?
+- Are there any concerns about programs being automatically assigned to a "National" affiliate?
+- How would this fit with your team's current data cleanup initiatives?
+- What visibility or reporting would you need around these automatically-assigned programs?
+
+---
+
+## Our Perspective
+
+Based on the **new information about program volume (750+ programs)**, we believe the approach to solving this problem needs to be reconsidered.
+
+**Why this changes our recommendation:**
+
+1. **Scale:** 750+ programs across multiple states with high ZIP code variability is substantially larger than initially anticipated
+2. **Maintenance reality:** The manual/script approach (Option A) would require an estimated 98 hours/year of ongoing maintenance work
+3. **Data cleanup impact:** As your team works through data cleanup initiatives, program locations will change, increasing the maintenance burden
+4. **Scalability concerns:** Manual processes don't scale as program volume grows
+5. **Strategic alignment:** Large manual maintenance efforts divert staff time from higher-value strategic work
+
+**What we recommend:**
+
+We recommend scheduling time to discuss:
+- Whether the scale of Option A's maintenance burden aligns with your team's capacity
+- Whether Option B (Programmatic Safety Net) is worth exploring further
+- Trade-offs between implementation approaches
+- How this decision fits with your broader data cleanup and system improvement priorities
+- Timeline expectations and resource availability
+
+We want to make sure we're aligned on the right approach before moving forward, given that this decision impacts long-term maintenance responsibilities for your team.
+
+---
+
+## Recommended Next Steps
+
+We'd like to schedule a meeting to discuss this finding and our recommendation. In this discussion, we can:
+
+1. **Review the data:** Walk through the SQL query results showing the 750+ orphan programs and their geographic distribution
+2. **Discuss Option A implications:** Talk through what the manual maintenance approach would require from your team on an ongoing basis
+3. **Explore Option B viability:** Determine if the programmatic safety net approach aligns with your priorities and timeline
+4. **Evaluate trade-offs:** Discuss upfront investment vs. ongoing maintenance burden
+5. **Make a decision:** Decide which approach best fits your team's capacity, priorities, and strategic goals
+
+**We can also discuss:**
+- Whether to proceed with Option A as an interim solution while considering Option B long-term
+- Whether to defer this work until after other higher-priority initiatives
+- Any alternative approaches we haven't considered
+
+Please let us know your availability for a 30-45 minute discussion in the coming week.
+
+---
+
+## Questions or Need More Information?
+
+We understand this is a significant finding that impacts our approach. If you'd like to review any of the following before our meeting, we're happy to share:
+
+- SQL query results showing the 750+ orphan programs
+- Detailed breakdown of why the volume impacts our approach
+- More technical detail on how Option B would work
+- Preliminary effort estimates for both approaches
+
+Please let us know what would be most helpful for you to review ahead of our discussion.
+
+---
+
+**Supporting Documentation Available:**
+- SQL Query for Identifying Orphan Programs (programs_without_affiliate_mapping.sql)
+- Detailed Technical Analysis (Item21_NationalAffiliate_OptionB_Recommendation.md) - available upon request
+
+---
+
+Best regards,
+
+Aksana Rahouski
+[Title]
+Orases
+[Contact Information]

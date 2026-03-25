@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard 4: NQMS Assessment Status Overview - Mentor Connector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #1a202c;
+        }
+
+        .dashboard-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .pipeline-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .pipeline-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .pipeline-card-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            margin-bottom: 8px;
+        }
+
+        .pipeline-card-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #1a202c;
+        }
+
+        .pipeline-card-percentage {
+            font-size: 14px;
+            color: #a0aec0;
+        }
+
+        .funnel-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a202c;
+        }
+
+        .funnel-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .funnel-stage {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .funnel-bar {
+            height: 60px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .funnel-bar:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .funnel-bar.stage-1 { width: 100%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); }
+        .funnel-bar.stage-2 { width: 85%; background: linear-gradient(90deg, #4299e1 0%, #3182ce 100%); }
+        .funnel-bar.stage-3 { width: 72%; background: linear-gradient(90deg, #48bb78 0%, #38a169 100%); }
+        .funnel-bar.stage-4 { width: 68%; background: linear-gradient(90deg, #ed8936 0%, #dd6b20 100%); }
+        .funnel-bar.stage-5 { width: 62%; background: linear-gradient(90deg, #38b2ac 0%, #319795 100%); }
+
+        .funnel-label {
+            flex: 1;
+        }
+
+        .funnel-count {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+
+        .funnel-dropoff {
+            position: absolute;
+            right: -140px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            color: #e53e3e;
+            background: #fff5f5;
+            padding: 4px 10px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 12px;
+            background: #f7fafc;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        .data-table tr:hover {
+            background: #f7fafc;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.in-progress {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        .status-badge.pending-review {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .action-btn {
+            padding: 6px 14px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 12px;
+            background: white;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #f7fafc;
+            border-color: #4299e1;
+            color: #2c5282;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .gauge-card {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .gauge {
+            width: 180px;
+            height: 180px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .gauge-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #38a169 0% var(--percentage),
+                #e2e8f0 var(--percentage) 100%
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-inner {
+            width: 140px;
+            height: 140px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .gauge-label {
+            font-size: 12px;
+            color: #718096;
+            text-transform: uppercase;
+        }
+
+        .gauge-target {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .gauge-target strong {
+            color: #38a169;
+        }
+
+        @media (max-width: 768px) {
+            .funnel-dropoff {
+                position: static;
+                transform: none;
+                margin-top: 8px;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>NQMS Assessment Status Overview</h1>
+        <p>Monitor assessment pipeline, completion rates, and bottlenecks | Essential for NQMS Operations</p>
+    </div>
+
+    <div class="pipeline-cards">
+        <div class="pipeline-card">
+            <div class="pipeline-card-label">In Progress</div>
+            <div class="pipeline-card-value">187</div>
+            <div class="pipeline-card-percentage">28% of total</div>
+        </div>
+        <div class="pipeline-card">
+            <div class="pipeline-card-label">Pending Review</div>
+            <div class="pipeline-card-value">96</div>
+            <div class="pipeline-card-percentage">15% of total</div>
+        </div>
+        <div class="pipeline-card">
+            <div class="pipeline-card-label">Completed</div>
+            <div class="pipeline-card-value">453</div>
+            <div class="pipeline-card-percentage">68% of total</div>
+        </div>
+        <div class="pipeline-card">
+            <div class="pipeline-card-label">Goals Completed</div>
+            <div class="pipeline-card-value">412</div>
+            <div class="pipeline-card-percentage">62% of total</div>
+        </div>
+    </div>
+
+    <div class="funnel-section">
+        <h2 class="section-title">Assessment Status Funnel</h2>
+        <div class="funnel-container">
+            <div class="funnel-stage">
+                <div class="funnel-bar stage-1">
+                    <span class="funnel-label">Started</span>
+                    <span class="funnel-count">667</span>
+                </div>
+            </div>
+            <div class="funnel-stage">
+                <div class="funnel-bar stage-2">
+                    <span class="funnel-label">In Progress</span>
+                    <span class="funnel-count">567</span>
+                </div>
+                <span class="funnel-dropoff">-100 (15% drop-off)</span>
+            </div>
+            <div class="funnel-stage">
+                <div class="funnel-bar stage-3">
+                    <span class="funnel-label">Submitted for Review</span>
+                    <span class="funnel-count">483</span>
+                </div>
+                <span class="funnel-dropoff">-84 (15% drop-off)</span>
+            </div>
+            <div class="funnel-stage">
+                <div class="funnel-bar stage-4">
+                    <span class="funnel-label">Approved</span>
+                    <span class="funnel-count">453</span>
+                </div>
+                <span class="funnel-dropoff">-30 (6% drop-off)</span>
+            </div>
+            <div class="funnel-stage">
+                <div class="funnel-bar stage-5">
+                    <span class="funnel-label">Goals Completed</span>
+                    <span class="funnel-count">412</span>
+                </div>
+                <span class="funnel-dropoff">-41 (9% drop-off)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Assessments Needing Attention</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Program</th>
+                    <th>Status</th>
+                    <th>Days in Status</th>
+                    <th>Completion</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Youth Leadership Initiative</td>
+                    <td><span class="status-badge in-progress">In Progress</span></td>
+                    <td>127 days</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%;"></div>
+                        </div>
+                        45%
+                    </td>
+                    <td><button class="action-btn">Send Reminder</button></td>
+                </tr>
+                <tr>
+                    <td>Academic Mentoring Program</td>
+                    <td><span class="status-badge in-progress">In Progress</span></td>
+                    <td>95 days</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 62%;"></div>
+                        </div>
+                        62%
+                    </td>
+                    <td><button class="action-btn">Send Reminder</button></td>
+                </tr>
+                <tr>
+                    <td>Career Connect Mentors</td>
+                    <td><span class="status-badge pending-review">Pending Review</span></td>
+                    <td>48 days</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%;"></div>
+                        </div>
+                        100%
+                    </td>
+                    <td><button class="action-btn">Review Now</button></td>
+                </tr>
+                <tr>
+                    <td>STEM Excellence Program</td>
+                    <td><span class="status-badge pending-review">Pending Review</span></td>
+                    <td>35 days</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%;"></div>
+                        </div>
+                        100%
+                    </td>
+                    <td><button class="action-btn">Review Now</button></td>
+                </tr>
+                <tr>
+                    <td>Community Connections</td>
+                    <td><span class="status-badge in-progress">In Progress</span></td>
+                    <td>112 days</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 38%;"></div>
+                        </div>
+                        38%
+                    </td>
+                    <td><button class="action-btn">Send Reminder</button></td>
+                </tr>
+                <tr>
+                    <td>After School Mentorship</td>
+                    <td><span class="status-badge pending-review">Pending Review</span></td>
+                    <td>29 days</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%;"></div>
+                        </div>
+                        100%
+                    </td>
+                    <td><button class="action-btn">Review Now</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Average Completion Time Metrics</h2>
+        <div class="metrics-grid">
+            <div class="gauge-card">
+                <h3 style="font-size: 16px; margin-bottom: 8px; color: #4a5568;">Days to Complete Assessment</h3>
+                <div class="gauge">
+                    <div class="gauge-circle" style="--percentage: 73%;">
+                        <div class="gauge-inner">
+                            <div class="gauge-value">22</div>
+                            <div class="gauge-label">Days</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gauge-target">Target: <strong>30 days</strong></div>
+                <p style="font-size: 14px; color: #38a169; margin-top: 8px;">✓ Within target</p>
+            </div>
+            <div class="gauge-card">
+                <h3 style="font-size: 16px; margin-bottom: 8px; color: #4a5568;">Days in Review</h3>
+                <div class="gauge">
+                    <div class="gauge-circle" style="--percentage: 47%;">
+                        <div class="gauge-inner">
+                            <div class="gauge-value">14</div>
+                            <div class="gauge-label">Days</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gauge-target">Target: <strong>7 days</strong></div>
+                <p style="font-size: 14px; color: #e53e3e; margin-top: 8px;">⚠ Above target</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Table row click handlers
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const action = this.textContent;
+                const row = this.closest('tr');
+                const program = row.cells[0].textContent;
+                console.log(`${action} for ${program}`);
+                alert(`${action} for ${program}`);
+            });
+        });
+    </script>
+</body>
+</html>

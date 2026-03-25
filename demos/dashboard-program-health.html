@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard 1: Program Health & Status Overview - Mentor Connector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #1a202c;
+        }
+
+        .dashboard-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .status-card {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            margin-bottom: 12px;
+        }
+
+        .status-card-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a202c;
+        }
+
+        .status-card-trend {
+            font-size: 14px;
+            color: #38a169;
+        }
+
+        .status-card-trend.down {
+            color: #e53e3e;
+        }
+
+        .status-card-trend::before {
+            content: '↑ ';
+            font-size: 16px;
+        }
+
+        .status-card-trend.down::before {
+            content: '↓ ';
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 300px;
+            background: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .pie-chart {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .pie-visual {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #38a169 0% 68%,
+                #ecc94b 68% 82%,
+                #ed8936 82% 95%,
+                #a0aec0 95% 100%
+            );
+        }
+
+        .pie-legend {
+            flex: 1;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        .legend-label {
+            flex: 1;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .legend-value {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a202c;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.new {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .activity-icon.updated {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        .activity-icon.status-change {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 14px;
+            color: #1a202c;
+            margin-bottom: 2px;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-right: 4px;
+        }
+
+        select {
+            padding: 8px 32px 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%234A5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        select:hover {
+            border-color: #a0aec0;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+        }
+
+        .map-text {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .map-text strong {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .pie-chart {
+                flex-direction: column;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>Program Health & Status Overview</h1>
+        <p>Real-time operational visibility across all programs | Landing Page Dashboard</p>
+    </div>
+
+    <div class="filters">
+        <span class="filter-label">Quick Filters:</span>
+        <select id="affiliateFilter">
+            <option value="">All Affiliates</option>
+            <option value="1">Big Brothers Big Sisters</option>
+            <option value="2">Mentor National</option>
+            <option value="3">Youth Guidance</option>
+            <option value="4">iMentor</option>
+        </select>
+        <select id="stateFilter">
+            <option value="">All States</option>
+            <option value="CA">California</option>
+            <option value="NY">New York</option>
+            <option value="TX">Texas</option>
+            <option value="FL">Florida</option>
+            <option value="IL">Illinois</option>
+        </select>
+        <select id="deliveryFilter">
+            <option value="">All Delivery Types</option>
+            <option value="community">Community-based</option>
+            <option value="site">Site-based</option>
+            <option value="ementoring">E-mentoring</option>
+            <option value="hybrid">Hybrid</option>
+        </select>
+        <select id="statusFilter">
+            <option value="">All Statuses</option>
+            <option value="approved">Approved</option>
+            <option value="paused">Paused</option>
+            <option value="pending">Pending</option>
+        </select>
+    </div>
+
+    <div class="status-cards">
+        <div class="status-card">
+            <div class="status-card-label">Total Active Programs</div>
+            <div class="status-card-value">1,847</div>
+            <div class="status-card-trend">+52 this month</div>
+        </div>
+        <div class="status-card">
+            <div class="status-card-label">Total Paused Programs</div>
+            <div class="status-card-value">263</div>
+            <div class="status-card-trend down">+18 this month</div>
+        </div>
+        <div class="status-card">
+            <div class="status-card-label">Pending Approval</div>
+            <div class="status-card-value">34</div>
+            <div class="status-card-trend">-8 this week</div>
+        </div>
+        <div class="status-card">
+            <div class="status-card-label">Total Youth Served</div>
+            <div class="status-card-value">45,328</div>
+            <div class="status-card-trend">+1,243 this quarter</div>
+        </div>
+    </div>
+
+    <div class="two-column">
+        <div class="section">
+            <h2 class="section-title">Program Status Distribution</h2>
+            <div class="pie-chart">
+                <div class="pie-visual" role="img" aria-label="Pie chart showing program status distribution"></div>
+                <div class="pie-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #38a169;"></div>
+                        <span class="legend-label">Approved</span>
+                        <span class="legend-value">1,847 (68%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ecc94b;"></div>
+                        <span class="legend-label">Paused</span>
+                        <span class="legend-value">263 (14%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ed8936;"></div>
+                        <span class="legend-label">Pending</span>
+                        <span class="legend-value">34 (13%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #a0aec0;"></div>
+                        <span class="legend-label">Deleted</span>
+                        <span class="legend-value">128 (5%)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Recent Activity</h2>
+            <ul class="activity-list">
+                <li class="activity-item">
+                    <div class="activity-icon new">+</div>
+                    <div class="activity-content">
+                        <div class="activity-title">New program: Youth Leadership Initiative</div>
+                        <div class="activity-time">2 minutes ago</div>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon updated">↻</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Updated: Academic Mentoring Program</div>
+                        <div class="activity-time">15 minutes ago</div>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon status-change">⚠</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Status changed: Career Connect (Paused)</div>
+                        <div class="activity-time">1 hour ago</div>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon new">+</div>
+                    <div class="activity-content">
+                        <div class="activity-title">New program: STEM Mentorship</div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon updated">↻</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Updated: College Access Mentors</div>
+                        <div class="activity-time">3 hours ago</div>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon status-change">⚠</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Status changed: After School Mentors (Approved)</div>
+                        <div class="activity-time">5 hours ago</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Geographic Distribution</h2>
+        <div class="map-container">
+            <div class="map-overlay"></div>
+            <div class="map-text">
+                <strong>Interactive USA Heat Map</strong>
+                State-level program density with click-through capability<br>
+                <small style="opacity: 0.8;">Top states: CA (347), TX (289), NY (251), FL (187), IL (143)</small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        const filters = {
+            affiliate: document.getElementById('affiliateFilter'),
+            state: document.getElementById('stateFilter'),
+            delivery: document.getElementById('deliveryFilter'),
+            status: document.getElementById('statusFilter')
+        };
+
+        Object.values(filters).forEach(filter => {
+            filter.addEventListener('change', function() {
+                console.log('Filter applied:', this.id, this.value);
+                // In real implementation, this would trigger data refresh
+            });
+        });
+    </script>
+</body>
+</html>

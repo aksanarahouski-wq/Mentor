@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard 5: NQMS Impact & Outcomes - Mentor Connector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        .dashboard-header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .dependency-notice {
+            background: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 16px 20px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #742a2a;
+        }
+
+        .dependency-notice strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #e53e3e;
+        }
+
+        .impact-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .impact-card {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+        }
+
+        .impact-card-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            margin-bottom: 12px;
+        }
+
+        .impact-card-value {
+            font-size: 42px;
+            font-weight: 700;
+            color: #38a169;
+            margin-bottom: 4px;
+        }
+
+        .impact-card-subtitle {
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 320px;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .line-chart {
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            position: relative;
+        }
+
+        .chart-line {
+            stroke: #667eea;
+            stroke-width: 3;
+            fill: none;
+            filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+        }
+
+        .chart-point {
+            fill: #667eea;
+        }
+
+        .chart-axis {
+            stroke: #cbd5e0;
+            stroke-width: 1;
+        }
+
+        .chart-label {
+            font-size: 12px;
+            fill: #718096;
+        }
+
+        .scatter-plot {
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            position: relative;
+        }
+
+        .scatter-dot {
+            r: 6;
+            opacity: 0.7;
+            transition: all 0.2s;
+        }
+
+        .scatter-dot:hover {
+            opacity: 1;
+            r: 8;
+        }
+
+        .scatter-dot.improving {
+            fill: #38a169;
+        }
+
+        .scatter-dot.declining {
+            fill: #e53e3e;
+        }
+
+        .diagonal-line {
+            stroke: #a0aec0;
+            stroke-width: 2;
+            stroke-dasharray: 5,5;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: 200px repeat(3, 1fr);
+            gap: 2px;
+            margin-top: 16px;
+        }
+
+        .heatmap-cell {
+            padding: 16px 12px;
+            text-align: center;
+            font-size: 13px;
+            border-radius: 4px;
+        }
+
+        .heatmap-header {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .heatmap-row-label {
+            background: #f7fafc;
+            text-align: left;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .heatmap-value {
+            font-weight: 600;
+            color: white;
+        }
+
+        .heat-1 { background: #c6f6d5; color: #22543d !important; }
+        .heat-2 { background: #68d391; color: #22543d !important; }
+        .heat-3 { background: #48bb78; color: white !important; }
+        .heat-4 { background: #38a169; color: white !important; }
+        .heat-5 { background: #2f855a; color: white !important; }
+
+        .badge-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 250px;
+            padding: 20px;
+            gap: 12px;
+        }
+
+        .badge-bar-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-bar {
+            width: 100%;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .badge-bar:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .badge-bar-value {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .badge-bar-label {
+            font-size: 12px;
+            color: #4a5568;
+            text-align: center;
+        }
+
+        .export-section {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #cbd5e0;
+            padding: 24px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .export-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .export-description {
+            font-size: 14px;
+            color: #4a5568;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .heatmap-grid {
+                grid-template-columns: 150px repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>⭐ NQMS Impact & Outcomes</h1>
+        <p>Demonstrate measurable ROI and program improvement | Strategic Dashboard for Funders & Executive Leadership</p>
+    </div>
+
+    <div class="dependency-notice">
+        <strong>⚠ Implementation Note:</strong>
+        This dashboard requires Enhancement #11 (Assessment History & Multi-Assessment Support) and Enhancement #15 (Full Data Export for Research) to be completed first. The visualizations below demonstrate the intended capabilities once longitudinal assessment data is available.
+    </div>
+
+    <div class="impact-summary">
+        <div class="impact-card">
+            <div class="impact-card-label">Programs Improving</div>
+            <div class="impact-card-value">87%</div>
+            <div class="impact-card-subtitle">342 of 394 programs with reassessments</div>
+        </div>
+        <div class="impact-card">
+            <div class="impact-card-label">Average Rating Increase</div>
+            <div class="impact-card-value">+1.2</div>
+            <div class="impact-card-subtitle">Points across all sections (0-5 scale)</div>
+        </div>
+        <div class="impact-card">
+            <div class="impact-card-label">Total Goals Achieved</div>
+            <div class="impact-card-value">1,834</div>
+            <div class="impact-card-subtitle">Across 453 completed assessments</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Longitudinal Rating Trends</h2>
+        <p style="font-size: 14px; color: #718096; margin-bottom: 16px;">Network-wide improvement trajectory across assessment cycles</p>
+        <div class="chart-container">
+            <svg class="line-chart" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet">
+                <!-- Axes -->
+                <line x1="50" y1="20" x2="50" y2="220" class="chart-axis" />
+                <line x1="50" y1="220" x2="550" y2="220" class="chart-axis" />
+
+                <!-- Y-axis labels -->
+                <text x="35" y="25" class="chart-label" text-anchor="end">5.0</text>
+                <text x="35" y="70" class="chart-label" text-anchor="end">4.0</text>
+                <text x="35" y="120" class="chart-label" text-anchor="end">3.0</text>
+                <text x="35" y="170" class="chart-label" text-anchor="end">2.0</text>
+                <text x="35" y="220" class="chart-label" text-anchor="end">1.0</text>
+
+                <!-- X-axis labels -->
+                <text x="150" y="240" class="chart-label" text-anchor="middle">Baseline</text>
+                <text x="300" y="240" class="chart-label" text-anchor="middle">Cycle 2</text>
+                <text x="450" y="240" class="chart-label" text-anchor="middle">Cycle 3</text>
+
+                <!-- Trend line -->
+                <path d="M 150 160 L 300 110 L 450 75" class="chart-line" />
+
+                <!-- Data points -->
+                <circle cx="150" cy="160" r="6" class="chart-point" />
+                <circle cx="300" cy="110" r="6" class="chart-point" />
+                <circle cx="450" cy="75" r="6" class="chart-point" />
+
+                <!-- Value labels -->
+                <text x="150" y="150" class="chart-label" text-anchor="middle" font-weight="600">2.8</text>
+                <text x="300" y="100" class="chart-label" text-anchor="middle" font-weight="600">3.6</text>
+                <text x="450" y="65" class="chart-label" text-anchor="middle" font-weight="600">4.0</text>
+            </svg>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Goal Achievement Impact</h2>
+        <p style="font-size: 14px; color: #718096; margin-bottom: 16px;">Baseline score vs. Achieved score (above diagonal = improvement)</p>
+        <div class="chart-container">
+            <svg class="scatter-plot" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet">
+                <!-- Axes -->
+                <line x1="50" y1="20" x2="50" y2="220" class="chart-axis" />
+                <line x1="50" y1="220" x2="550" y2="220" class="chart-axis" />
+
+                <!-- Diagonal reference line -->
+                <line x1="50" y1="220" x2="550" y2="20" class="diagonal-line" />
+
+                <!-- Axis labels -->
+                <text x="300" y="255" class="chart-label" text-anchor="middle" font-weight="600">Baseline Score</text>
+                <text x="20" y="120" class="chart-label" text-anchor="middle" font-weight="600" transform="rotate(-90 20 120)">Achieved Score</text>
+
+                <!-- Scatter dots (improving programs - above diagonal) -->
+                <circle cx="120" cy="100" class="scatter-dot improving"><title>Program A: 1.5 → 3.8</title></circle>
+                <circle cx="180" cy="80" class="scatter-dot improving"><title>Program B: 2.1 → 4.2</title></circle>
+                <circle cx="240" cy="60" class="scatter-dot improving"><title>Program C: 2.8 → 4.5</title></circle>
+                <circle cx="150" cy="120" class="scatter-dot improving"><title>Program D: 1.8 → 3.4</title></circle>
+                <circle cx="210" cy="90" class="scatter-dot improving"><title>Program E: 2.4 → 4.0</title></circle>
+                <circle cx="270" cy="70" class="scatter-dot improving"><title>Program F: 3.0 → 4.6</title></circle>
+                <circle cx="330" cy="80" class="scatter-dot improving"><title>Program G: 3.5 → 4.4</title></circle>
+                <circle cx="140" cy="130" class="scatter-dot improving"><title>Program H: 1.6 → 3.2</title></circle>
+                <circle cx="200" cy="100" class="scatter-dot improving"><title>Program I: 2.3 → 3.9</title></circle>
+                <circle cx="260" cy="85" class="scatter-dot improving"><title>Program J: 2.9 → 4.1</title></circle>
+                <circle cx="320" cy="90" class="scatter-dot improving"><title>Program K: 3.4 → 4.0</title></circle>
+                <circle cx="380" cy="75" class="scatter-dot improving"><title>Program L: 3.9 → 4.7</title></circle>
+
+                <!-- Scatter dots (declining programs - below diagonal) -->
+                <circle cx="300" cy="160" class="scatter-dot declining"><title>Program X: 3.2 → 2.8</title></circle>
+                <circle cx="360" cy="170" class="scatter-dot declining"><title>Program Y: 3.7 → 3.1</title></circle>
+                <circle cx="420" cy="190" class="scatter-dot declining"><title>Program Z: 4.1 → 3.4</title></circle>
+            </svg>
+        </div>
+        <div style="display: flex; gap: 24px; justify-content: center; margin-top: 16px; font-size: 14px;">
+            <div><span style="display: inline-block; width: 12px; height: 12px; background: #38a169; border-radius: 50%; margin-right: 6px;"></span><strong>87%</strong> Improving (342 programs)</div>
+            <div><span style="display: inline-block; width: 12px; height: 12px; background: #e53e3e; border-radius: 50%; margin-right: 6px;"></span><strong>13%</strong> Declining (52 programs)</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Badge Achievement Trends</h2>
+        <p style="font-size: 14px; color: #718096; margin-bottom: 16px;">New badges earned per quarter</p>
+        <div class="badge-chart">
+            <div class="badge-bar-container">
+                <div class="badge-bar" style="height: 60%;">
+                    <div class="badge-bar-value">48</div>
+                </div>
+                <div class="badge-bar-label">Q1 2025</div>
+            </div>
+            <div class="badge-bar-container">
+                <div class="badge-bar" style="height: 75%;">
+                    <div class="badge-bar-value">62</div>
+                </div>
+                <div class="badge-bar-label">Q2 2025</div>
+            </div>
+            <div class="badge-bar-container">
+                <div class="badge-bar" style="height: 90%;">
+                    <div class="badge-bar-value">73</div>
+                </div>
+                <div class="badge-bar-label">Q3 2025</div>
+            </div>
+            <div class="badge-bar-container">
+                <div class="badge-bar" style="height: 100%;">
+                    <div class="badge-bar-value">81</div>
+                </div>
+                <div class="badge-bar-label">Q4 2025</div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 16px; padding: 12px; background: #f7fafc; border-radius: 6px;">
+            <strong style="font-size: 18px; color: #38a169;">264 total badges</strong>
+            <span style="color: #718096; margin-left: 8px;">earned in 2025</span>
+            <span style="color: #38a169; margin-left: 12px;">↑ +28% vs 2024</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Section-Level Improvement Analysis</h2>
+        <p style="font-size: 14px; color: #718096; margin-bottom: 16px;">Average ratings by NQMS section across assessment cycles (darker = higher rating)</p>
+        <div class="heatmap-grid">
+            <div class="heatmap-cell heatmap-header">NQMS Section</div>
+            <div class="heatmap-cell heatmap-header">Baseline</div>
+            <div class="heatmap-cell heatmap-header">Cycle 2</div>
+            <div class="heatmap-cell heatmap-header">Cycle 3</div>
+
+            <div class="heatmap-cell heatmap-row-label">Recruitment</div>
+            <div class="heatmap-cell heat-2 heatmap-value">2.8</div>
+            <div class="heatmap-cell heat-3 heatmap-value">3.6</div>
+            <div class="heatmap-cell heat-4 heatmap-value">4.1</div>
+
+            <div class="heatmap-cell heatmap-row-label">Screening</div>
+            <div class="heatmap-cell heat-3 heatmap-value">3.1</div>
+            <div class="heatmap-cell heat-4 heatmap-value">3.9</div>
+            <div class="heatmap-cell heat-5 heatmap-value">4.3</div>
+
+            <div class="heatmap-cell heatmap-row-label">Training</div>
+            <div class="heatmap-cell heat-2 heatmap-value">2.5</div>
+            <div class="heatmap-cell heat-3 heatmap-value">3.4</div>
+            <div class="heatmap-cell heat-4 heatmap-value">3.9</div>
+
+            <div class="heatmap-cell heatmap-row-label">Matching</div>
+            <div class="heatmap-cell heat-3 heatmap-value">3.3</div>
+            <div class="heatmap-cell heat-4 heatmap-value">4.0</div>
+            <div class="heatmap-cell heat-5 heatmap-value">4.5</div>
+
+            <div class="heatmap-cell heatmap-row-label">Monitoring</div>
+            <div class="heatmap-cell heat-2 heatmap-value">2.9</div>
+            <div class="heatmap-cell heat-3 heatmap-value">3.7</div>
+            <div class="heatmap-cell heat-4 heatmap-value">4.2</div>
+
+            <div class="heatmap-cell heatmap-row-label">Support</div>
+            <div class="heatmap-cell heat-3 heatmap-value">3.2</div>
+            <div class="heatmap-cell heat-4 heatmap-value">3.8</div>
+            <div class="heatmap-cell heat-5 heatmap-value">4.4</div>
+
+            <div class="heatmap-cell heatmap-row-label">Closure</div>
+            <div class="heatmap-cell heat-1 heatmap-value">2.3</div>
+            <div class="heatmap-cell heat-3 heatmap-value">3.2</div>
+            <div class="heatmap-cell heat-3 heatmap-value">3.7</div>
+        </div>
+    </div>
+
+    <div class="section export-section">
+        <h2 class="section-title" style="margin-bottom: 8px;">Export for Research & Evaluation</h2>
+        <p class="export-description">Generate comprehensive CSV with all assessment cycles, baseline/improved ratings, and goal tracking</p>
+        <button class="export-btn" onclick="handleExport()">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 3a1 1 0 00-1 1v8.586l-2.293-2.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L11 12.586V4a1 1 0 00-1-1z"/>
+                <path d="M3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+            </svg>
+            Export All Assessment Data (Wide Format)
+        </button>
+        <p class="export-description" style="margin-top: 12px;">
+            <strong>Includes:</strong> All assessment cycles • Baseline & improved ratings • Goal tracking • Data dictionary for SPSS, R, Stata
+        </p>
+    </div>
+
+    <script>
+        function handleExport() {
+            alert('Export functionality will generate:\n\n• Wide-format CSV (one row per program)\n• All assessment cycles included\n• Baseline and improved ratings for each question\n• Goal tracking across assessments\n• Data dictionary/codebook for researchers\n• Format optimized for SPSS, R, Stata\n\nThis feature requires Enhancement #15 (Full Data Export for Research) to be implemented.');
+        }
+    </script>
+</body>
+</html>
