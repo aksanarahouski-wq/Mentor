@@ -1,0 +1,10 @@
+# CodeCommit repositories (managed separately)
+mentor-connect/
+mentor-connect-app/
+mentor-connect-3-step-app/
+
+# OS files
+.DS_Store
+
+# Claude Code
+.claude/
