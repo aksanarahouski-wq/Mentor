@@ -1,5 +1,5 @@
 # Items Not Ready to Estimate — 2026 Scope
-**Last Updated:** May 2026
+**Last Updated:** July 2026
 **Based On:** Scope Review Meetings 1-3 (March-May 2026)
 
 ---
@@ -15,7 +15,7 @@ These items from `SystemEnhancements.md` are **not included in the refined estim
 | # | Item | Category | Blocker |
 |---|------|----------|---------|
 | 2 | Export Capabilities | Blocked on MENTOR | Sandy's field list |
-| 3 | Duplicate Detection & Prevention | Needs Discovery | Depends on #17 and #11 |
+| 3 | Duplicate Detection & Prevention | Needs Discovery | Depends on #17; partially unblocked by #11 (now estimated in Group 7) |
 | 10 | Public-Facing Site Improvements | Deferred | MENTOR internal strategy |
 | 15 | Full Data Export for Research | Deferred | Revisit June/July 2026 |
 | 17 | Data Field Enhancements (Organization) | Deferred | Too complex for current scope |
@@ -26,7 +26,7 @@ These items from `SystemEnhancements.md` are **not included in the refined estim
 | 26 | Public Program Search & Mentee Discovery | Deferred | Tied to #10 strategy discussion |
 | 29 | Global Search & Analytics Export Hub | Blocked on MENTOR | Field inventory for comprehensive export |
 
-**Total: 11 items**
+**Total: 11 items** (down from 13 — #11 and #30 moved to estimates in July 2026)
 - Blocked on MENTOR action: 4
 - Needs discovery session: 1
 - Deferred: 6
@@ -146,7 +146,7 @@ These items have directional agreement but are too complex to estimate without a
 
 ### #3 — Duplicate Detection & Prevention
 
-**Needs:** Further discovery — depends on #17 (organization field) decisions and #11 (multi-assessment) reducing the workaround problem
+**Needs:** Further discovery — depends on #17 (organization field) decisions. #11 (multi-assessment) is now estimated in Group 7 and will partially reduce the duplicate workaround problem once implemented.
 
 **What was decided:**
 - Current exact-match, case-sensitive duplicate detection exists but is insufficient
@@ -170,7 +170,7 @@ These items have directional agreement but are too complex to estimate without a
 - Organization field (#17) revival would be the strategic long-term solution but is deferred
 - Scope will narrow naturally once #11 is implemented and the duplicate landscape is reassessed
 
-**To unblock:** Two dependencies — (1) #11 multi-assessment implementation reduces the problem, and (2) decisions on #17 organization field inform the long-term approach. A scoping session after #11 is built would be ideal.
+**To unblock:** #11 multi-assessment is now estimated (Group 7, 40-64h) — once implemented, the duplicate landscape should be reassessed. Decisions on #17 (organization field) inform the long-term approach. A scoping session after #11 is built would be ideal.
 
 ---
 
@@ -247,6 +247,6 @@ These items were intentionally deferred during scope review meetings. They are n
 | Program export field list | Sandy | #2 | Pending — Sandy to send desired fields |
 | Program field inventory spreadsheet | Sandy | #22, #25, #29 | Pending — Sandy marking which fields display publicly |
 | MENTOR internal strategy discussion | Tim / Mike / Sandy | #10, #26 | No timeline set |
-| #11 implementation + #17 decisions | Development + MENTOR | #3 | Dependent on other items completing first |
+| #11 implementation + #17 decisions | Development + MENTOR | #3 | #11 now estimated (Group 7); #17 still deferred |
 
 *Note: #11 and #30 were moved to estimated status in July 2026 (see `07_NQMS_Enhancements.md`). Discovery session with Mike still recommended to finalize scope but medium-confidence estimates are included in the Group 7 total.*
