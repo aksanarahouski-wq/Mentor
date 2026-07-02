@@ -1,6 +1,6 @@
 # Group 4: Affiliate Management
 **Items:** #19, #20, #21
-**Estimated Effort:** 128-176 hours
+**Estimated Effort:** 72-109 hours
 
 ---
 
@@ -8,7 +8,7 @@
 
 These three items are tightly coupled — #21 (National Affiliate) must exist before #20 (affiliate inactivation unlinking) works, and #19 (UX improvements) touches the same plugin and templates. Building them as a unit avoids rework and ensures the affiliate lifecycle is coherent end-to-end.
 
-**Note:** Item #21 has a detailed standalone estimate at `estimates/Item21_NationalAffiliate_WorkEstimate.md` (96-120 hours). That estimate remains the authoritative reference for #21. This document layers #19 and #20 on top and identifies bundling savings.
+**Note:** Item #21 has a detailed standalone estimate at `Item21_NationalAffiliate_WorkEstimate.md` (96-120 hours original). That estimate provides the authoritative breakdown for #21. Hours revised down after July 2026 codebase review confirmed existing infrastructure covers ~70% of requirements. This document layers #19 and #20 on top and identifies bundling savings.
 
 ---
 
@@ -16,22 +16,22 @@ These three items are tightly coupled — #21 (National Affiliate) must exist be
 
 **What:** Create a "safety net" affiliate that automatically captures programs not matching any other affiliate's service area. One and only one affiliate can be designated as national. No service areas — acts as catch-all.
 
-**Detailed Estimate:** See `estimates/Item21_NationalAffiliate_WorkEstimate.md`
+**Detailed Estimate:** See `Item21_NationalAffiliate_WorkEstimate.md`
 
 **Summary from existing estimate:**
 
-| Feature | Hours |
-|---------|-------|
-| Core Configuration (DB, logic, migration) | 16-24 |
-| Affiliate Management UI Support | 16-24 |
-| Program Display and Assignment | 8-16 |
-| Search and Filtering | 16-24 |
-| NQMS Assessments and Reporting | 12-16 |
-| User Access Control and Permissions | 16-24 |
-| Testing and QA | 16-24 |
-| **Total** | **96-120** |
-| Recommended Buffer | 24 |
-| **Total with Buffer** | **120-144** |
+| Feature | Original Hours | With Claude Code |
+|---------|---------------|-----------------|
+| Core Configuration (DB, logic, migration) | 16-24 | 8-12 |
+| Affiliate Management UI Support | 16-24 | 8-12 |
+| Program Display and Assignment | 8-16 | 4-8 |
+| Search and Filtering | 16-24 | 8-12 |
+| NQMS Assessments and Reporting | 12-16 | 6-10 |
+| User Access Control and Permissions | 16-24 | 8-12 |
+| Testing and QA | 16-24 | 12-16 |
+| **Total** | **96-120** | **54-82** |
+| Recommended Buffer (complexity risk) | 24 | 4-0 |
+| **Total with Buffer** | **120-144** | **58-82** |
 
 **Key Technical Details (from codebase exploration):**
 - Affiliates plugin: `plugins/Affiliates/` with controllers, models, templates
@@ -78,10 +78,10 @@ These three items are tightly coupled — #21 (National Affiliate) must exist be
 - Test edge case: program matches multiple affiliates, one goes inactive
 - Verify no impact on programs matched to other active affiliates
 
-**Estimate:** 20-28 hours
-- Backend inactivation/reactivation logic: 8-12 hours
-- Frontend confirmation dialogs: 4-6 hours
-- QA/testing: 8-10 hours
+**Estimate:** 10-15 hours
+- Backend inactivation/reactivation logic: 4-6 hours (Claude Code writes reassignment queries and reactivation reversal)
+- Frontend confirmation dialogs: 2-3 hours (reuses modal pattern from Group 2)
+- QA/testing: 4-6 hours (edge cases important but main scenarios are straightforward)
 
 **Dependency:** #21 must be implemented first — programs need somewhere to go when unlinked.
 
@@ -110,30 +110,30 @@ These three items are tightly coupled — #21 (National Affiliate) must exist be
 - Backend: may need new API endpoints for state → county → ZIP code drill-down
 - Frontend: significant rework of `ServiceAreas.vue` component
 
-**Estimate:** 20-28 hours
-- Backend API for state/county/ZIP drill-down: 6-8 hours
-- Frontend Vue component rework: 10-14 hours
-- QA/testing: 4-6 hours
+**Estimate:** 8-14 hours
+- Backend API for state/county/ZIP drill-down: 2-3 hours (existing Vue app already has state/county/ZIP drill-down with bulk add/remove — incremental improvements, not a rebuild)
+- Frontend Vue component rework: 4-7 hours (iterative UX improvements to existing AvailableServiceAreas.vue and SelectedServiceAreas.vue rather than full rebuild)
+- QA/testing: 2-4 hours
 
 ### 19b: Remove "Global Administrator" Field
 - Remove from edit form template (lines 191-224)
 - Remove from entity/table if no longer used
 - Migration to drop column (or keep but hide — depends on whether any data is valuable)
 
-**Estimate:** 2-3 hours
+**Estimate:** 1 hour
 
 ### 19c: Replace "Programmatic Contact" with Primary Contact Toggle
 - Remove autocomplete field (lines 66-91)
 - Add radio button / toggle on the affiliate admin list to mark one admin as primary contact
 - Update affiliate model to support primary contact flag on `AffiliatesUsers` join table
 
-**Estimate:** 4-6 hours
+**Estimate:** 2-4 hours
 
 ### 19d: Remove "Trained" Checkbox
 - Remove from edit form template (lines 55-60)
 - Migration to drop column (only 9 affiliates have it checked — data is meaningless)
 
-**Estimate:** 1-2 hours
+**Estimate:** 0.5-1 hour
 
 ### 19e: Add Program Characteristic Filters + ZIP Code Search to Internal Program Search
 - **Note:** This overlaps significantly with Item #9 (Group 3). If #9 is built first, this work is already done. If built here, it covers the same scope.
@@ -142,7 +142,7 @@ These three items are tightly coupled — #21 (National Affiliate) must exist be
 
 **Estimate:** 0 hours (covered under #9 in Group 3)
 
-### Item #19 Subtotal: 27-39 hours
+### Item #19 Subtotal: 12-20 hours
 
 ---
 
@@ -150,14 +150,13 @@ These three items are tightly coupled — #21 (National Affiliate) must exist be
 
 | Item | Hours (Low) | Hours (High) |
 |------|-------------|--------------|
-| #21 — National Affiliate | 96 | 120 |
-| #20 — Affiliate Inactivation | 20 | 28 |
-| #19 — Affiliate UX Improvements | 27 | 39 |
-| **Group Total** | **143** | **187** |
+| #21 — National Affiliate (with buffer) | 58 | 82 |
+| #20 — Affiliate Inactivation | 10 | 15 |
+| #19 — Affiliate UX Improvements | 12 | 20 |
+| Bundling savings (shared plugin context, shared QA) | -8 | -8 |
+| **Group Total** | **72** | **109** |
 
-**Bundling Savings:** ~15-20 hours saved. A developer implementing #21 is already deep in the affiliate plugin and can address #19's field removals and #20's inactivation logic in the same pass. Service area UX rework (#19a) naturally follows the national affiliate work since it touches the same Vue components. Shared QA testing reduces overhead.
-
-**Adjusted Group Estimate: 128-167 hours**
+**Note:** #21 buffer reduced after codebase review confirmed existing infrastructure (ZIP matching, service area Vue app, affiliate plugin structure) covers ~70% of what's needed. Buffer retained for orphan program migration risk. This remains the highest-complexity item in the entire 2026 scope.
 
 ---
 

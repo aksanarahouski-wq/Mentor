@@ -1389,9 +1389,10 @@ Need to determine the desired behavior and implementation approach:
 > **Client Priority:** 🔴 Critical | **Client Impact:** ⬛⬛⬛ High - All Users, 100%
 >
 > **REFINED SCOPE:**
-> - Remove mentor/mentee checkbox from search criteria — programs appear based on status + delivery method + location only
-> - Mentor/mentee checkbox toggles determine whether the inquiry button is displayed, not whether the program is found
-> - Delivery method remains a required program field and search condition
+> - **Remove role filter from search query** — the `accepting_mentors`/`accepting_mentees` flags are no longer used as WHERE conditions in the search SQL. All approved programs matching location + delivery method are returned regardless of acceptance status.
+> - **Search form still collects role** — the user still selects "mentor" or "mentee" on the 3-Step form. This value is passed through to the results page but is NOT used to filter the query.
+> - **Inquiry button controlled by role + acceptance flags** — on the results page, the user's selected role is compared against the program's `accepting_mentors`/`accepting_mentees` flags. If the program accepts that role, show the inquiry button. If not, show an indicator (e.g., "Not currently accepting mentors") with no inquiry option.
+> - **Delivery method remains a required search condition** — at least one delivery method must be selected for a program to appear
 > - Programs with no delivery method still won't appear in search (acceptable)
 > - E-mentoring programs: "national" (no ZIP needed) or "limited" (with ZIP codes)
 >

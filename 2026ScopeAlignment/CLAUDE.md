@@ -14,8 +14,7 @@ The master list of all 30 enhancement items (with client feedback and review sta
 
 | Folder/File | What's Inside |
 |-------------|--------------|
-| `estimates/` | Original hour estimates (pre-Meeting 3). Includes the detailed Item 21 National Affiliate work estimate (96-120 hours). |
-| `estimates-refined/` | **Current estimates** — post-Meeting-3, grouped by codebase area. 6 groups covering 15 items, 264-373 hours total. `00_Summary.md` has the rollup. |
+| `estimates/` | **Current estimates** — post-Meeting-3, grouped by codebase area. 7 groups covering 15 items, 210-321 hours total. Group 7 (NQMS) separated for independent budgeting. Includes Item 21 detailed estimate (96-120h). `00_Summary.md` has the rollup. |
 | `PRDs/` | Product requirements documents for items that need detailed specs (e.g., Item 21 — National Affiliate access). |
 | `demos/` | Interactive HTML dashboard prototypes (7 dashboards: data health, quality, NQMS impact/status, program analytics/health, user activity). `index.html` links to all of them. |
 | `Prototypes/` | Prototype prompts and planning docs (e.g., NQMS prototype prompts). |
